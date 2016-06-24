@@ -1,0 +1,21 @@
+<!DOCTYPE xml>
+<beans>
+	<bean id="restoreAccessNotification" class="net.devstudy.resume.model.NotificationMessage">
+		<property name="subject" value="Restore Access" />
+		<property name="content">
+			<value>restore-access.html</value>
+		</property>
+	</bean>
+	<bean id="passwordChangedNotification" class="net.devstudy.resume.model.NotificationMessage">
+		<property name="subject" value="Password changed" />
+		<property name="content">
+			<value>password-changed.html</value>
+		</property>
+	</bean>
+	<bean id="profileActiveNotification" class="net.devstudy.resume.model.NotificationMessage">
+		<property name="subject" value="Welcome to MyResume" />
+		<property name="content">
+			<value>profile-active.html</value>
+		</property>
+	</bean>
+</beans>

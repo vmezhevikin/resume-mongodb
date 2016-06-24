@@ -1,0 +1,9 @@
+resume-mongo
+
+SourceIt Java AdvancedCourse project
+
+Base project:
+	resume
+	https://github.com/vmezhevikin/resume
+Difference:
+	database postgresql -> mongoDB
