@@ -11,7 +11,7 @@ import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.FieldMatch;
 import net.devstudy.resume.annotation.constraints.PasswordStrength;
 
-@FieldMatch(first = "password", second = "confirm")
+@FieldMatch(firstField = "password", secondField = "confirm")
 public class SignUpForm extends RecaptchaForm implements Serializable {
 	
 	private static final long serialVersionUID = 5105334805427908062L;

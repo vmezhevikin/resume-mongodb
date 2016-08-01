@@ -8,7 +8,7 @@
 	<name>resume-mongo Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<build>
-		<finalName>resume-mongo</finalName>
+		<finalName>ROOT</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

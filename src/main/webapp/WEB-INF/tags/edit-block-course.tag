@@ -6,23 +6,23 @@
 <%@ attribute name="course" required="false" type="net.devstudy.resume.domain.Course"%>
 <%@ attribute name="minYear" required="true" type="java.lang.Object"%>
 <%@ attribute name="maxYear" required="true" type="java.lang.Object"%>
-<tr>
+<tr id="item-${index}">
 	<td>
 		<div class="row">
 			<div class="panel panel-default">
 				<table class="table">
 					<tr>
-						<td width="35%">
+						<td class="course-td-desc">
 							<label>Description</label>
 							<input name="items[${index}].description" type="text" class="form-control" placeholder="Description" value="${course.description}" />
 							<form:errors path="items[${index}].description" cssClass="alert alert-danger" role="alert" element="div"/>
 						</td>
-						<td width="35%">
+						<td class="course-td-school">
 							<label>School</label>
 							<input name="items[${index}].school" type="text" class="form-control" placeholder="School" value="${course.school}" />
 							<form:errors path="items[${index}].school" cssClass="alert alert-danger" role="alert" element="p" />
 						</td>
-						<td width="13%">
+						<td class="course-td-month">
 							<label>Completion month</label>
 							<select name="items[${index}].completionMonth" class="form-control">
 								<option value="${null}">Not finished</option>
@@ -31,7 +31,7 @@
 								</c:forEach>
 							</select>
 						</td>
-						<td width="13%">
+						<td class="course-td-year">
 							<label>Completion year</label>
 							<select name="items[${index}].completionYear" class="form-control">
 								<option value="${null}">Not finished</option>
@@ -40,8 +40,8 @@
 								</c:forEach>
 							</select>
 						</td>
-						<td class="text-muted" width="4%">
-							<button type="button" class="close" aria-label="Close" onclick="deleteRow(this)">
+						<td class="text-muted td-close-btn">
+							<button type="button" class="close remove-item-btn" aria-label="Close" id="close-btn-${index}" data-item="${index}">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</td>

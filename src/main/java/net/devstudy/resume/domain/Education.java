@@ -6,29 +6,28 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
-import org.springframework.data.annotation.Transient;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.FirstFieldLessThanSecond;
 
-@FirstFieldLessThanSecond(first = "startingYear", second = "completionYear")
-public class Education implements Serializable, ProfileDomain {
+@FirstFieldLessThanSecond(firstField = "startingYear", secondField = "completionYear", message = "Completion date must be after starting date")
+public class Education implements Serializable, ProfileCollectionField {
 	
 	private static final long serialVersionUID = 8257785827490293025L;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String speciality;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String university;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String department;
 
 	private Integer startingYear;
@@ -73,13 +72,6 @@ public class Education implements Serializable, ProfileDomain {
 
 	public void setCompletionYear(Integer completionYear) {
 		this.completionYear = completionYear;
-	}
-
-	@Transient
-	@Override
-	public boolean hasNullSubstantionalFields() {
-		return speciality == null && university == null && department == null
-				&& startingYear == null && completionYear == null;
 	}
 
 	@Override

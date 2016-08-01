@@ -2,11 +2,19 @@ package net.devstudy.resume.domain;
 
 import java.io.Serializable;
 
-public class Hobby implements Serializable, ProfileDomain {
+import org.springframework.data.annotation.Transient;
+
+public class Hobby implements Serializable, ProfileCollectionField {
 	
 	private static final long serialVersionUID = 4900586647321986730L;
 
 	private String description;
+	
+	@Transient
+	private String checked;
+	
+	@Transient
+	private String icon;
 
 	public String getDescription() {
 		return description;
@@ -16,9 +24,20 @@ public class Hobby implements Serializable, ProfileDomain {
 		this.description = description;
 	}
 
-	@Override
-	public boolean hasNullSubstantionalFields() {
-		return description == null;
+	public String getChecked() {
+		return checked;
+	}
+
+	public void setChecked(String checked) {
+		this.checked = checked;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	@Override

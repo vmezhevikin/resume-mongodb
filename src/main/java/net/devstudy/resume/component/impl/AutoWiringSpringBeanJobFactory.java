@@ -1,4 +1,4 @@
-package net.devstudy.resume.configuration;
+package net.devstudy.resume.component.impl;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.BeansException;

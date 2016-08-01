@@ -13,32 +13,32 @@ public class Contact implements Serializable {
 	private static final long serialVersionUID = 4455994843618128278L;
 
 	@EnglishLanguage
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String skype;
 
 	@EnglishLanguage
-	@URL(message = "Not a URL address")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String vkontakte;
 
 	@EnglishLanguage
-	@URL(message = "Not a URL address")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String facebook;
 
 	@EnglishLanguage
-	@URL(message = "Not a URL address")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String linkedin;
 
 	@EnglishLanguage
-	@URL(message = "Not a URL address")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String github;
 
 	@EnglishLanguage
-	@URL(message = "Not a URL address")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String stackoverflow;
 
 	public String getSkype() {

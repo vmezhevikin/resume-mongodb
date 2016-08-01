@@ -20,6 +20,8 @@ public interface FindProfileService {
 	@Nullable Profile findByEmail(@Nonnull String email);
 
 	@Nonnull Page<Profile> findAll(@Nonnull Pageable pageable);
+
+	@Nonnull Page<Profile> findAllActive(@Nonnull Pageable pageable);
 	
 	@Nonnull Iterable<Profile> findAllForIndexing();
 	

@@ -9,6 +9,7 @@ import net.devstudy.resume.domain.Contact;
 import net.devstudy.resume.domain.Course;
 import net.devstudy.resume.domain.Education;
 import net.devstudy.resume.domain.Experience;
+import net.devstudy.resume.domain.Hobby;
 import net.devstudy.resume.domain.Language;
 import net.devstudy.resume.domain.Profile;
 import net.devstudy.resume.domain.Skill;
@@ -18,26 +19,16 @@ import net.devstudy.resume.form.SignUpForm;
 public interface EditProfileService {
 	
 	@Nonnull Profile createNewProfile(@Nonnull SignUpForm form);
-
+	
 	void updateSkill(String idProfile, @Nonnull List<Skill> editedList);
-
-	void addSkill(String idProfile, @Nonnull Skill newSkill);
 
 	void updateLanguage(String idProfile, @Nonnull List<Language> editedList);
 
-	void addLanguage(String idProfile, @Nonnull Language newLanguage);
-
 	void updateExperience(String idProfile, @Nonnull List<Experience> editedList);
-
-	void addExperience(String idProfile, @Nonnull Experience newExperience);
 
 	void updateEducation(String idProfile, @Nonnull List<Education> editedList);
 
-	void addEducation(String idProfile, @Nonnull Education newEducation);
-
 	void updateCourse(String idProfile, @Nonnull List<Course> editedList);
-
-	void addCourse(String idProfile, @Nonnull Course newCourse);
 
 	void updateCertificate(String idProfile, @Nonnull List<Certificate> editedList);
 
@@ -49,7 +40,7 @@ public interface EditProfileService {
 
 	void updateContact(String idProfile, @Nonnull Contact newContact);
 
-	void updateHobby(String idProfile, @Nonnull List<String> editedList);
+	void updateHobby(String idProfile, @Nonnull List<Hobby> editedList);
 
 	void removeProfile(String idProfile);
 

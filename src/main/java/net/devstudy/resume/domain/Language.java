@@ -6,19 +6,18 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
-import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 
-public class Language implements Serializable, ProfileDomain {
+public class Language implements Serializable, ProfileCollectionField {
 	
 	private static final long serialVersionUID = 7843447412112290470L;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String name;
 
 	@EnglishLanguage
@@ -51,12 +50,6 @@ public class Language implements Serializable, ProfileDomain {
 
 	public void setLevel(String level) {
 		this.level = level;
-	}
-
-	@Transient
-	@Override
-	public boolean hasNullSubstantionalFields() {
-		return name == null && type == null && level == null;
 	}
 
 	@Override

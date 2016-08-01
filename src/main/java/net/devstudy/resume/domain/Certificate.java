@@ -14,13 +14,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.NotEmptyFile;
 
-public class Certificate implements Serializable, ProfileDomain {
+public class Certificate implements Serializable, ProfileCollectionField {
 	
 	private static final long serialVersionUID = -6718545401459519784L;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String description;
 
 	@JsonIgnore
@@ -64,12 +64,6 @@ public class Certificate implements Serializable, ProfileDomain {
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
-	}
-
-	@Transient
-	@Override
-	public boolean hasNullSubstantionalFields() {
-		return description == null && img == null && imgSmall == null;
 	}
 
 	@Override

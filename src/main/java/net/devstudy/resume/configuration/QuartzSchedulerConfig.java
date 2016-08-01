@@ -18,11 +18,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
+import net.devstudy.resume.component.impl.AutoWiringSpringBeanJobFactory;
 import net.devstudy.resume.scheduler.RemoveNotCompletedProfileJob;
 import net.devstudy.resume.scheduler.RemoveOldDataServiceJob;
 
 @Configuration
-public class QuartzSchedulerConfiguration {
+public class QuartzSchedulerConfig {
 
 	@Value("${remove.not.completed.profiles.schedule.cron}")
 	private String removeNotCompletedProfilesScheduleCron;

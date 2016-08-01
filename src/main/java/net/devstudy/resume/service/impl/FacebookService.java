@@ -1,7 +1,6 @@
 package net.devstudy.resume.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,10 +23,12 @@ import net.devstudy.resume.repository.search.ProfileSearchRepository;
 import net.devstudy.resume.repository.storage.ProfileRepository;
 import net.devstudy.resume.service.SocialService;
 import net.devstudy.resume.util.DataUtil;
+import net.devstudy.resume.util.ProfileDataUtil;
 import net.devstudy.resume.util.SecurityUtil;
 
 @Service
 public class FacebookService implements SocialService<User> {
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FacebookService.class);
 
 	@Autowired
@@ -63,27 +64,16 @@ public class FacebookService implements SocialService<User> {
 	}
 
 	@Override
-	public Profile createNewProfileViaSocailNetwork(User user) {
-		LOGGER.info("Creating new profile via Facebook");
-
-		checkEmailAddressIsUnique(user.getEmail());
-
+	public Profile createNewProfileViaSocailNetwork(User user) {	
+		LOGGER.debug("Profile: creating new profile via Facebook");
 		Profile profile = new Profile();
-		String firstName = translitConverter.translit(user.getFirstName().replace(" ", ""));
-		String lastName = translitConverter.translit(user.getFirstName().replace(" ", ""));
-		profile.setUid(generateProfileUid(firstName, lastName));
-		profile.setFirstName(DataUtil.capitailizeName(firstName));
-		profile.setLastName(DataUtil.capitailizeName(lastName));
-		profile.setPassword(passwordEncoder.encode(SecurityUtil.generatePassword()));
-		profile.setActive(false);
-		setCountryAndCityFromUser(profile, user);
-		profile.setBirthday(user.getBirthdayAsDate());
-		profile.setEmail(user.getEmail());
-		profile.setAdditionalInfo(user.getRelationshipStatus());
-		setEducationsFromUser(profile, user);
-		setExperienceFromUser(profile, user);
-		profileRepository.save(profile);
-		registerIndexAfterCreateProfileViaFacebook(profile);
+		synchronized (this) {
+			checkEmailAddressIsUnique(user.getEmail());
+			ProfileDataUtil.setAllProfileCollectionsAsEmty(profile);
+			setFieldsFromUser(profile, user);
+			profileRepository.save(profile);
+			registerIndexAfterCreateProfileViaFacebook(profile, user);
+		}
 		return profile;
 	}
 
@@ -96,6 +86,26 @@ public class FacebookService implements SocialService<User> {
 				throw new CantCompleteClientRequestException("Profile with email " + email + " already exist. Can't create profile via Facebook");
 			}
 		}
+	}
+	
+	private void setFieldsFromUser(Profile profile, User user) {
+		setDataFromUserName(profile, user);
+		profile.setPassword(passwordEncoder.encode(SecurityUtil.generatePassword()));
+		profile.setActive(false);
+		setCountryAndCityFromUser(profile, user);
+		profile.setBirthday(user.getBirthdayAsDate());
+		profile.setEmail(user.getEmail());
+		profile.setAdditionalInfo(user.getRelationshipStatus());
+		setEducationsFromUser(profile, user);
+		setExperienceFromUser(profile, user);
+	}
+	
+	private void setDataFromUserName(Profile profile, User user) {
+		String firstName = translitConverter.translit(user.getFirstName().replace(" ", ""));
+		String lastName = translitConverter.translit(user.getLastName().replace(" ", ""));
+		profile.setUid(generateProfileUid(firstName, lastName));
+		profile.setFirstName(DataUtil.capitailizeName(firstName));
+		profile.setLastName(DataUtil.capitailizeName(lastName));
 	}
 
 	private String generateProfileUid(String firstName, String lastName) {
@@ -143,21 +153,18 @@ public class FacebookService implements SocialService<User> {
 	private Education createEducationFromFacebook(com.restfb.types.User.Education educationFacebook) {
 		Education education = new Education();
 		education.setDepartment("Department");
-
 		if (educationFacebook.getSchool() != null) {
 			education.setUniversity(educationFacebook.getSchool().getName());
 		}
 		else {
 			education.setUniversity("University");
 		}
-
 		if (educationFacebook.getDegree() != null) {
 			education.setSpeciality(educationFacebook.getDegree().getName());
 		}
 		else {
 			education.setSpeciality("Speciality");
 		}
-
 		if (educationFacebook.getYear() != null) {
 			education.setStartingYear(Integer.parseInt(educationFacebook.getYear().getName()));
 			education.setCompletionYear(Integer.parseInt(educationFacebook.getYear().getName()));
@@ -165,66 +172,50 @@ public class FacebookService implements SocialService<User> {
 			education.setStartingYear(DataUtil.getCurrentYear());
 			education.setCompletionYear(DataUtil.getCurrentYear());
 		}
-
 		return education;
 	}
 
 	private Experience createExperienceFromFacebook(com.restfb.types.User.Work workFacebook) {
 		Experience experience = new Experience();
-
 		if (workFacebook.getEmployer() != null) {
 			experience.setCompany(workFacebook.getEmployer().getName());
 		}
 		else {
 			experience.setCompany("Company");
 		}
-
 		if (workFacebook.getStartDate() != null) {
 			experience.setStartingDate(workFacebook.getStartDate());
 		}
 		else {
 			experience.setStartingDate(new LocalDate().toDate());
 		}
-
 		if (workFacebook.getEndDate() != null) {
 			experience.setCompletionDate(workFacebook.getEndDate());
 		}
 		else {
 			experience.setCompletionDate(new LocalDate().toDate());
 		}
-
 		if (workFacebook.getPosition() != null) {
 			experience.setPosition(workFacebook.getPosition().getName());
 		}
 		else {
 			experience.setPosition("Position");
 		}
-
 		if (workFacebook.getDescription() != null) {
 			experience.setResponsibility(workFacebook.getDescription());
 		}
 		else {
 			experience.setResponsibility("Responsibilities");
 		}
-
 		return experience;
 	}
 
-	@SuppressWarnings("unchecked")
-	private void registerIndexAfterCreateProfileViaFacebook(final Profile profile) {
-		LOGGER.info("New profile via Facebook created: {}", profile.getUid());
-		profile.setCertificate(Collections.EMPTY_LIST);
-		profile.setCourse(Collections.EMPTY_LIST);
-		if (profile.getEducation() == null) {
-			profile.setEducation(Collections.EMPTY_LIST);
-		}
-		if (profile.getExperience() == null) {
-			profile.setExperience(Collections.EMPTY_LIST);
-		}
-		profile.setHobby(Collections.EMPTY_LIST);
-		profile.setLanguage(Collections.EMPTY_LIST);
-		profile.setSkill(Collections.EMPTY_LIST);
+	private void registerIndexAfterCreateProfileViaFacebook(final Profile profile, final User user) {
+		LOGGER.info("Profile {}: profile has been created via Facebook", profile.getUid());
+		ProfileDataUtil.setAllProfileCollectionsAsEmty(profile);
+		setEducationsFromUser(profile, user);
+		setExperienceFromUser(profile, user);
 		profileSearchRepository.save(profile);
-		LOGGER.info("New profile index created: {}", profile.getUid());
+		LOGGER.info("Profile {}: has been index created", profile.getUid());
 	}
 }

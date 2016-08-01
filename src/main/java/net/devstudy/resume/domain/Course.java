@@ -15,18 +15,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 
-public class Course implements Serializable, ProfileDomain {
+public class Course implements Serializable, ProfileCollectionField {
 	
 	private static final long serialVersionUID = -7509905830407382879L;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String description;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@JsonIgnore
 	private String school;
 
@@ -106,12 +106,6 @@ public class Course implements Serializable, ProfileDomain {
 			setCompletionDate(date);
 		} else
 			setCompletionDate(null);
-	}
-
-	@Transient
-	@Override
-	public boolean hasNullSubstantionalFields() {
-		return description == null && school == null && completionDate == null;
 	}
 
 	@Override

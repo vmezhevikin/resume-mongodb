@@ -21,11 +21,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.devstudy.resume.annotation.constraints.DateFormat;
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
+import net.devstudy.resume.annotation.constraints.FieldImageOrFileNotEmpty;
 import net.devstudy.resume.annotation.constraints.Phone;
 
 @Document(indexName = "profile")
 @org.springframework.data.mongodb.core.mapping.Document(collection = "profile")
-public class Profile implements Serializable {
+@FieldImageOrFileNotEmpty(imageField = "photo", fileField = "file")
+public class Profile extends AbstractDomain<String> implements Serializable {
 	
 	private static final long serialVersionUID = 4419584168346691423L;
 
@@ -46,47 +48,47 @@ public class Profile implements Serializable {
 	@JsonIgnore
 	private String fullName;
 
-	@Size(min = 1, message = "Don't leave it empty")
+	@Size(min = 1)
 	@EnglishLanguage
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String country;
 
-	@Size(min = 1, message = "Don't leave it empty")
+	@Size(min = 1)
 	@EnglishLanguage
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String city;
 
 	private Date birthday;
 
-	@Size(min = 1, message = "Don't leave it empty")
+	@Size(min = 1)
 	@DateFormat
 	@JsonIgnore
 	@Transient
 	private String birthdayString;
 
-	@Size(min = 1, message = "Don't leave it empty")
+	@Size(min = 1)
 	@EnglishLanguage
-	@Email(message = "Not an email address")
+	@Email
 	@JsonIgnore
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String email;
 
-	@Size(min = 1, message = "Don't leave it empty")
+	@Size(min = 1)
 	@Phone
 	@JsonIgnore
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String phone;
 
 	@EnglishLanguage
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String additionalInfo;
 
 	@EnglishLanguage
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String objective;
 
 	@EnglishLanguage
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String summary;
 
 	@JsonIgnore
@@ -113,9 +115,6 @@ public class Profile implements Serializable {
 
 	private List<Skill> skill;
 
-	//@JsonIgnore
-	//private ProfileRestore profileRestore;
-
 	@JsonIgnore
 	private Contact contact;
 
@@ -123,6 +122,7 @@ public class Profile implements Serializable {
 	@Transient
 	private MultipartFile file;
 
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -333,11 +333,10 @@ public class Profile implements Serializable {
 			return false;
 		}
 		for (Hobby h : hobby) {
-			if (h.getDescription().equals(description)) {
+			if (description.equals(h.getDescription())) {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -357,14 +356,6 @@ public class Profile implements Serializable {
 		this.skill = skill;
 	}
 
-	/*public ProfileRestore getProfileRestore() {
-		return profileRestore;
-	}
-
-	public void setProfileRestore(ProfileRestore profileRestore) {
-		this.profileRestore = profileRestore;
-	}*/
-
 	public Contact getContact() {
 		if (contact == null) {
 			contact = new Contact();
@@ -382,5 +373,96 @@ public class Profile implements Serializable {
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
+		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((objective == null) ? 0 : objective.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((photo == null) ? 0 : photo.hashCode());
+		result = prime * result + ((photoSmall == null) ? 0 : photoSmall.hashCode());
+		result = prime * result + ((uid == null) ? 0 : uid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Profile other = (Profile) obj;
+		if (additionalInfo == null) {
+			if (other.additionalInfo != null)
+				return false;
+		} else if (!additionalInfo.equals(other.additionalInfo))
+			return false;
+		if (birthday == null) {
+			if (other.birthday != null)
+				return false;
+		} else if (!birthday.equals(other.birthday))
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
+		if (country == null) {
+			if (other.country != null)
+				return false;
+		} else if (!country.equals(other.country))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (objective == null) {
+			if (other.objective != null)
+				return false;
+		} else if (!objective.equals(other.objective))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if (photo == null) {
+			if (other.photo != null)
+				return false;
+		} else if (!photo.equals(other.photo))
+			return false;
+		if (photoSmall == null) {
+			if (other.photoSmall != null)
+				return false;
+		} else if (!photoSmall.equals(other.photoSmall))
+			return false;
+		if (uid == null) {
+			if (other.uid != null)
+				return false;
+		} else if (!uid.equals(other.uid))
+			return false;
+		return true;
 	}
 }

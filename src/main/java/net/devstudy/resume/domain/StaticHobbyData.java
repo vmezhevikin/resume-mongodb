@@ -5,15 +5,17 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "skillCategory")
-public class SkillCategory implements Serializable {
+@Document(collection = "staticHobbyData")
+public class StaticHobbyData implements Serializable {
 	
-	private static final long serialVersionUID = -5449563594231337899L;
+	private static final long serialVersionUID = -4937799992479955679L;
 
 	@Id
 	private String id;
 	
-	private String idCategory;
+	private String idHobby;
+
+	private String icon;
 
 	private String name;
 
@@ -25,12 +27,20 @@ public class SkillCategory implements Serializable {
 		this.id = id;
 	}
 
-	public String getIdCategory() {
-		return idCategory;
+	public String getIdHobby() {
+		return idHobby;
 	}
 
-	public void setIdCategory(String idCategory) {
-		this.idCategory = idCategory;
+	public void setIdHobby(String idHobby) {
+		this.idHobby = idHobby;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public String getName() {

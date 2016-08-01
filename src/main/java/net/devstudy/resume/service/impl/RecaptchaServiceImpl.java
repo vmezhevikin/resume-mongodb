@@ -22,15 +22,6 @@ public class RecaptchaServiceImpl implements RecaptchaService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RecaptchaServiceImpl.class);
 
-	private static class RecaptchaResponse {
-		
-		@JsonProperty("success")
-		private boolean success;
-
-		@JsonProperty("error-codes")
-		private Collection<String> errorCodes;
-	}
-
 	@Value("${recaptcha.url}")
 	private String recaptchaUrl;
 
@@ -62,5 +53,14 @@ public class RecaptchaServiceImpl implements RecaptchaService {
 		form.add("remoteip", remoteIP);
 		form.add("response", response);
 		return form;
+	}
+
+	private static class RecaptchaResponse {
+		
+		@JsonProperty("success")
+		private boolean success;
+
+		@JsonProperty("error-codes")
+		private Collection<String> errorCodes;
 	}
 }

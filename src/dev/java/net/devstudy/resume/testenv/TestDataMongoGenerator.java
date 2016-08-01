@@ -138,8 +138,8 @@ public class TestDataMongoGenerator
 	private static void clearDB(MongoClient mongoClient) throws SQLException {
 		
 		System.out.println("Clearing DB");
-		getDB(mongoClient).getCollection("skillCategory").drop();
-		getDB(mongoClient).getCollection("hobbyName").drop();
+		getDB(mongoClient).getCollection("staticSkillData").drop();
+		getDB(mongoClient).getCollection("staticHobbyData").drop();
 		getDB(mongoClient).getCollection("profile").drop();
 		getDB(mongoClient).getCollection("profileRestore").drop();
 		getDB(mongoClient).getCollection("rememberMeToken").drop();
@@ -148,8 +148,8 @@ public class TestDataMongoGenerator
 
 	private static void insertData(MongoClient mongoClient) throws SQLException, IOException {
 		System.out.println("Inserting data");
-		insertSkillCategory(mongoClient);
-		insertHobbyName(mongoClient);
+		insertStaticSkillData(mongoClient);
+		insertStaticHobbyData(mongoClient);
 		insertProfile(mongoClient);
 		insertProfileRestore(mongoClient);
 		insertRememberMeToken(mongoClient);
@@ -157,8 +157,8 @@ public class TestDataMongoGenerator
 		System.out.println("Data have been inserted");
 	}
 
-	private static void insertSkillCategory(MongoClient mongoClient) {
-		DBCollection collection = getDB(mongoClient).getCollection("skillCategory");
+	private static void insertStaticSkillData(MongoClient mongoClient) {
+		DBCollection collection = getDB(mongoClient).getCollection("staticSkillData");
 		for (int i = 1; i <= SKILLS_CATEGORIES.length; i++) {
 			BasicDBObject obj = new BasicDBObject("idCategory", i)
 					.append("name", SKILLS_CATEGORIES[i - 1]);
@@ -166,8 +166,8 @@ public class TestDataMongoGenerator
 		}
 	}
 
-	private static void insertHobbyName(MongoClient mongoClient) {
-		DBCollection collection = getDB(mongoClient).getCollection("hobbyName");
+	private static void insertStaticHobbyData(MongoClient mongoClient) {
+		DBCollection collection = getDB(mongoClient).getCollection("staticHobbyData");
 		for (int i = 1; i <= HOBBY_ICONS.length; i++) {
 			BasicDBObject obj = new BasicDBObject("idHobby", i)
 					.append("icon", HOBBY_ICONS[i - 1])
@@ -211,8 +211,8 @@ public class TestDataMongoGenerator
 		System.out.println("Inserting indexes");
 		getDB(mongoClient).getCollection("profile").createIndex(new BasicDBObject("active", 1), "profile_idx_active", false);
 		getDB(mongoClient).getCollection("profile").createIndex(new BasicDBObject("created", 1), "profile_idx_created", false);
-		getDB(mongoClient).getCollection("profile").createIndex(new BasicDBObject("email", 1), "profile_idx_email", true);
-		getDB(mongoClient).getCollection("profile").createIndex(new BasicDBObject("phone", 1), "profile_idx_phone", true);
+		getDB(mongoClient).getCollection("profile").createIndex(new BasicDBObject("email", 1), "profile_idx_email", false);
+		getDB(mongoClient).getCollection("profile").createIndex(new BasicDBObject("phone", 1), "profile_idx_phone", false);
 		getDB(mongoClient).getCollection("profile").createIndex(new BasicDBObject("uid", 1), "profile_idx_uid", true);
 		getDB(mongoClient).getCollection("profileRestore").createIndex(new BasicDBObject("token", 1), "profile_restore_idx_token", true);
 		getDB(mongoClient).getCollection("rememberMeToken").createIndex(new BasicDBObject("series", 1), "remember_me_idx_series", true);

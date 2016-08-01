@@ -56,15 +56,13 @@ public class FindProfileServiceImpl implements FindProfileService, UserDetailsSe
 	}
 
 	@Override
+	public Page<Profile> findAllActive(Pageable pageable) {
+		return profileRepository.findAllByActiveTrue(pageable);
+	}
+
+	@Override
 	public Iterable<Profile> findAllForIndexing() {
 		Iterable<Profile> allProfiles = profileRepository.findAll();
-		for (Profile profile : allProfiles) {
-			profile.getCertificate().size();
-			profile.getCourse().size();
-			profile.getExperience().size();
-			profile.getLanguage().size();
-			profile.getSkill().size();
-		}
 		return allProfiles;
 	}
 

@@ -6,8 +6,8 @@ import java.util.Date;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.SafeHtml;
-import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
+import org.hibernate.validator.constraints.URL;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Transient;
@@ -17,19 +17,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.FirstFieldLessThanSecond;
 
-@FirstFieldLessThanSecond(first = "startingDateStr", second = "completionDateStr")
-public class Experience implements Serializable, ProfileDomain {
+@FirstFieldLessThanSecond(firstField = "startingDate", secondField = "completionDate", message = "Completion date must be after starting date")
+public class Experience implements Serializable, ProfileCollectionField {
 	
 	private static final long serialVersionUID = 6158879936084081673L;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String company;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String position;
 
 	@JsonIgnore
@@ -39,20 +39,20 @@ public class Experience implements Serializable, ProfileDomain {
 	private Date completionDate;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@JsonIgnore
 	private String responsibility;
 
 	@EnglishLanguage
-	@URL(message = "Not a URL address")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@JsonIgnore
 	private String demo;
 
 	@EnglishLanguage
-	@URL(message = "Not a URL address")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@JsonIgnore
 	private String code;
 
@@ -212,13 +212,6 @@ public class Experience implements Serializable, ProfileDomain {
 	public void setCompletionYear(Integer completionYear) {
 		this.completionYear = completionYear;
 		setupCompletionDate();
-	}
-
-	@Transient
-	@Override
-	public boolean hasNullSubstantionalFields() {
-		return company == null && position == null && startingDate == null
-				&& completionDate == null;
 	}
 
 	private void setupCompletionDate() {

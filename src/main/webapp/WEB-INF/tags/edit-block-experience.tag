@@ -6,7 +6,7 @@
 <%@ attribute name="experience" required="false" type="net.devstudy.resume.domain.Experience"%>
 <%@ attribute name="minYear" required="true" type="java.lang.Object"%>
 <%@ attribute name="maxYear" required="true" type="java.lang.Object"%>
-<tr>
+<tr id="item-${index}">
 	<td>
 		<div class="row">
 			<div class="panel panel-default">
@@ -19,17 +19,17 @@
 						</td>
 						<td colspan="2">
 							<label>Company</label>
-							<input name="items[${index}].company" type="text" class="form-control" placeholder="Company" value="${experience.company}">
+							<input name="items[${index}].company" type="text" class="form-control" placeholder="Company" value="${experience.company}" />
 							<form:errors path="items[${index}].company" cssClass="alert alert-danger" role="alert" element="div" />
 						</td>
-						<td class="text-muted" width="4%">
-							<button type="button" class="close" aria-label="Close" onclick="deleteRow(this)">
+						<td class="text-muted td-close-btn">
+							<button type="button" class="close  remove-item-btn" aria-label="Close" id="close-btn-${index}" data-item="${index}">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</td>
 					</tr>
 					<tr>
-						<td width="24%">
+						<td class="experience-td-date">
 							<label>Starting month</label>
 							<select name="items[${index}].startingMonth" class="form-control">
 								<c:forEach var="month" begin="1" end="12">
@@ -37,7 +37,7 @@
 								</c:forEach>
 							</select>
 						</td>
-						<td width="24%">
+						<td class="experience-td-date">
 							<label>Starting year</label>
 							<select name="items[${index}].startingYear" class="form-control">
 								<c:forEach var="year" begin="${minYear}" end="${maxYear}">
@@ -45,7 +45,7 @@
 								</c:forEach>
 							</select>
 						</td>
-						<td width="24%">
+						<td class="experience-td-date">
 							<label>Completion month</label>
 							<select name="items[${index}].completionMonth" class="form-control">
 								<option value="${null}">Not finished</option>
@@ -54,7 +54,7 @@
 								</c:forEach>
 							</select>
 						</td>
-						<td width="24%">
+						<td class="experience-td-date">
 							<label>Completion year</label>
 							<select name="items[${index}].completionYear" class="form-control">
 								<option value="${null}">Not finished</option>

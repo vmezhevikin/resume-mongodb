@@ -4,20 +4,18 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Size;
 
-import org.springframework.data.annotation.Transient;
-
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 
-public class Skill implements Serializable, ProfileDomain {
+public class Skill implements Serializable, ProfileCollectionField {
 	
 	private static final long serialVersionUID = 1649774983085049619L;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
+	@Size(min = 1)
 	private String category;
 
 	@EnglishLanguage
-	@Size(min = 1, message = "Don't leave it empty")
+	@Size(min = 1)
 	private String description;
 
 	public String getCategory() {
@@ -34,12 +32,6 @@ public class Skill implements Serializable, ProfileDomain {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	@Transient
-	@Override
-	public boolean hasNullSubstantionalFields() {
-		return category == null && description == null;
 	}
 
 	@Override
