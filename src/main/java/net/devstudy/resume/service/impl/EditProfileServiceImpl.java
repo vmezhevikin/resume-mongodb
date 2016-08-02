@@ -326,7 +326,7 @@ public class EditProfileServiceImpl implements EditProfileService {
 
 	@Override
 	public void addRestoreToken(String idProfile, String token) {
-		LOGGER.debug("Creating restore token for profile {}", idProfile);
+		LOGGER.debug("Profile {}: creating restore token", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		ProfileRestore restore = new ProfileRestore();
 		restore.setId(profile.getId());

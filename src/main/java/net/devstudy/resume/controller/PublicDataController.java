@@ -95,7 +95,7 @@ public class PublicDataController {
 	public String getWelcomeMore(@RequestParam(value = "query", required = false) String query, Model model, @PageableDefault(size = Constants.MAX_PROFILES_PER_PAGE) @SortDefault(sort = "id") Pageable pageable) {
 		Page<Profile> profiles = null;
 		if (StringUtils.isEmpty(query)) {
-			profiles = findProfileService.findAll(pageable);
+			profiles = findProfileService.findAllActive(pageable);
 		} else {
 			profiles = findProfileService.findBySearchQuery(query, pageable);
 		}
@@ -127,7 +127,6 @@ public class PublicDataController {
 	@RequestMapping(value = "/sign-up", method = RequestMethod.GET)
 	public String getSignUp(Model model) {
 		model.addAttribute("form", formService.produceForm("sign-up"));
-		//model.addAttribute("hasErrors", false);
 		model.addAttribute("recaptchaSiteKey", recaptchaSiteKey);
 		return "sign-up";
 	}
@@ -135,7 +134,6 @@ public class PublicDataController {
 	@RequestMapping(value = "/sign-up", method = RequestMethod.POST)
 	public String postSignUp(@Valid @ModelAttribute("form") SignUpForm form, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
-			//model.addAttribute("hasErrors", true);
 			model.addAttribute("recaptchaSiteKey", recaptchaSiteKey);
 			return "sign-up";
 		}

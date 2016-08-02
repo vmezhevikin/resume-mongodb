@@ -21,13 +21,13 @@ public class SignUpForm extends RecaptchaForm implements Serializable {
 	}
 
 	@EnglishLanguage(withPunctuations = false, withSpecSymbols = false)
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String firstName;
 
 	@EnglishLanguage(withPunctuations = false, withSpecSymbols = false)
-	@Size(min = 1, message = "Don't leave it empty")
-	@SafeHtml(whitelistType = WhiteListType.NONE, message = "Html is not allowed")
+	@Size(min = 1)
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String lastName;
 
 	@EnglishLanguage(withPunctuations = false)

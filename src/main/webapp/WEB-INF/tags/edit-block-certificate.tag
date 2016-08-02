@@ -8,7 +8,7 @@
 	<input type="hidden" name="items[${index}].img" value="${certificate.img}" />
 	<input type="hidden" name="items[${index}].imgSmall" value="${certificate.imgSmall}" />
 	<input type="hidden" name="items[${index}].description" value="${certificate.description}" />
-	<button type="button" class="close remove-item-btn certificate-block-btn" aria-label="Close" data-id-item="${index}">
+	<button type="button" class="close remove-item-btn certificate-block-btn" aria-label="Close" data-item="${index}">
 		<span aria-hidden="true">&times;</span>
 	</button>
 	<a class="modal-certificate-btn thumbnail text-center" data-toggle="modal" data-target="#modal-certificate" data-certificate-img="${certificate.img}"
