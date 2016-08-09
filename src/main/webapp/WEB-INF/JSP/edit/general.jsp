@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <resume:edit-navtab section="General" />
-<form:form action="/edit/general?${_csrf.parameterName}=${_csrf.token}" method="post" commandName="form" enctype="multipart/form-data">
+<form:form action="/edit/general?${_csrf.parameterName}=${_csrf.token}" method="post" id="form" commandName="form" enctype="multipart/form-data">
 	<div class="container resume-edit-block">
 		<h2 class="text-center">${form.fullName}</h2>
 		<input type="hidden" name="fullName" value="${form.fullName}" />
@@ -134,10 +134,9 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="align-center">
-					<button type="submit" class="btn btn-primary">Edit</button>
+					<button id="submitBtn" type="button" class="btn btn-primary">Edit</button>
 				</td>
 			</tr>
 		</table>
 	</div>
 </form:form>
-<resume:modal-message message="${message}" />

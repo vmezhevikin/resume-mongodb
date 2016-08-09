@@ -20,17 +20,29 @@
 					<form:form action="/sign-up" method="post" commandName="form">
 						<div class="form-group">
 							<label>First name</label>
-							<input name="firstName" type="text" class="form-control" placeholder="Example: Richard" />
+							<c:set var="firstNamePopoverText" value="Firstname:
+								provide your real name (you won't be able to change it,
+								it will be used to generate your uid); 
+								use only english language only; don't use any symbols." />
+							<input name="firstName" type="text" class="form-control" placeholder="Example: Richard" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${firstNamePopoverText}" />
 							<form:errors path="firstName" cssClass="alert alert-danger" role="alert" element="div" />
 						</div>
 						<div class="form-group">
 							<label>Last name</label>
-							<input name="lastName" type="text" class="form-control" placeholder="Example: Hendricks" />
+							<c:set var="lastNamePopoverText" value="Lastname:
+								provide your real name (you won't be able to change it,
+								it will be used to generate your uid); 
+								use only english language only; don't use any symbols." />
+							<input name="lastName" type="text" class="form-control" placeholder="Example: Hendricks" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${lastNamePopoverText}" />
 							<form:errors path="lastName" cssClass="alert alert-danger" role="alert" element="div" />
 						</div>
 						<div class="form-group">
 							<label>Password</label>
-							<input name="password" type="password" class="form-control" placeholder="Password" />
+							<c:set var="passwordPopoverText" value="Provide strong password:
+								use english language only; 
+								password nust contain at least one digit, symbol, chars in lower case, upper case;  
+								password must be longer than 7 symbols." />
+							<input name="password" type="password" class="form-control" placeholder="Password" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${passwordPopoverText}" />
 							<form:errors path="password" cssClass="alert alert-danger" role="alert" element="div" />
 						</div>
 						<div class="form-group">

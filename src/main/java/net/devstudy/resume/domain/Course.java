@@ -14,8 +14,9 @@ import org.springframework.data.annotation.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
+import net.devstudy.resume.util.ProfileDataUtil;
 
-public class Course implements Serializable, ProfileCollectionField {
+public class Course implements Serializable, ProfileCollectionField, Comparable<Course> {
 	
 	private static final long serialVersionUID = -7509905830407382879L;
 
@@ -122,7 +123,7 @@ public class Course implements Serializable, ProfileCollectionField {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -143,5 +144,10 @@ public class Course implements Serializable, ProfileCollectionField {
 		} else if (!completionDate.equals(other.completionDate))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Course other) {
+		return ProfileDataUtil.compareFields(other.completionDate, this.completionDate);
 	}
 }

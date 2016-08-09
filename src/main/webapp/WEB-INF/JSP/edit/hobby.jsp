@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <resume:edit-navtab section="Hobby" />
-<form:form action="/edit/hobby" method="post" commandName="form">
+<form:form action="/edit/hobby" method="post" id="form" commandName="form">
 	<div class="container resume-edit-block">
 		<h2 class="text-center">Hobbies</h2>
 		<hr />
@@ -11,7 +11,7 @@
 		<p class="text-center text-muted">Select no more than ${form.maxSize} items.</p>
 		<hr />
 		<input type="hidden" name="maxSize" value="${form.maxSize}" />
-		<input type="hidden" name="currSize" value="${form.currSize}" id="current-hobby-count" />
+		<input type="hidden" name="currSize" value="${form.currSize}" id="currentHobbyCount" />
 		<table class="table table-borderless">
 			<tr>
 				<td>
@@ -27,10 +27,9 @@
 			</tr>
 			<tr>
 				<td class="align-center">
-					<button type="submit" class="btn btn-primary">Edit</button>
+					<button id="submitBtn" type="button" class="btn btn-primary">Edit</button>
 				</td>
 			</tr>
 		</table>
 	</div>
 </form:form>
-<resume:modal-message message="${message}" />

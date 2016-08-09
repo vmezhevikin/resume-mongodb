@@ -9,9 +9,10 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.FirstFieldLessThanSecond;
+import net.devstudy.resume.util.ProfileDataUtil;
 
 @FirstFieldLessThanSecond(firstField = "startingYear", secondField = "completionYear", message = "Completion date must be after starting date")
-public class Education implements Serializable, ProfileCollectionField {
+public class Education implements Serializable, ProfileCollectionField, Comparable<Education> {
 	
 	private static final long serialVersionUID = 8257785827490293025L;
 
@@ -115,5 +116,14 @@ public class Education implements Serializable, ProfileCollectionField {
 		} else if (!university.equals(other.university))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Education other) {
+		if (ProfileDataUtil.compareFields(other.completionYear, this.completionYear) != 0) {
+			return ProfileDataUtil.compareFields(other.completionYear, this.completionYear);
+		} else {
+			return ProfileDataUtil.compareFields(other.startingYear, this.startingYear);
+		}
 	}
 }

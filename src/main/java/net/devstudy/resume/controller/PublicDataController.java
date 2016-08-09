@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import net.devstudy.resume.Constants;
 import net.devstudy.resume.domain.Profile;
+import net.devstudy.resume.exception.CantCompleteClientRequestException;
 import net.devstudy.resume.form.SignUpForm;
 import net.devstudy.resume.service.EditProfileService;
 import net.devstudy.resume.service.FindProfileService;
@@ -84,6 +85,9 @@ public class PublicDataController {
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String getSearch(@ModelAttribute("query") String query, Model model) {
+		if (StringUtils.isEmpty(query)) {
+			throw new CantCompleteClientRequestException("Can't proceed empty search query = " + query);
+		}
 		PageRequest pageable = new PageRequest(0, Constants.MAX_PROFILES_PER_PAGE, new Sort("id"));
 		Page<Profile> profiles = findProfileService.findBySearchQuery(query, pageable);
 		model.addAttribute("profiles", profiles.getContent());

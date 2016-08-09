@@ -13,7 +13,7 @@
 				</div>
 				<div class="panel-body">
 					<p>Input your new password and confirm it.</p>
-					<form:form action="/edit/password" method="post" commandName="form">
+					<form:form action="/edit/password" method="post" id="form" commandName="form">
 						<div class="form-group">
 							<label>New password</label>
 							<input name="password" type="password" class="form-control" placeholder="New password" />
@@ -25,7 +25,7 @@
 							<form:errors path="confirm" cssClass="alert alert-danger" role="alert" element="div" />
 							<form:errors path="" cssClass="alert alert-danger" element="div" />
 						</div>
-						<button type="submit" class="btn btn-primary pull-left">Change</button>
+						<button id="submitBtn" type="button" class="btn btn-primary pull-left">Change</button>
 					</form:form>
 				</div>
 			</div>

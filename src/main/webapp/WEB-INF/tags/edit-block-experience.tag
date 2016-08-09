@@ -23,7 +23,7 @@
 							<form:errors path="items[${index}].company" cssClass="alert alert-danger" role="alert" element="div" />
 						</td>
 						<td class="text-muted td-close-btn">
-							<button type="button" class="close  remove-item-btn" aria-label="Close" id="close-btn-${index}" data-item="${index}">
+							<button type="button" class="close  remove-item-btn" aria-label="Close" id="closeBtn-${index}" data-item="${index}">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</td>

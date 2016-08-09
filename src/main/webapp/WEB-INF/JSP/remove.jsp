@@ -17,8 +17,8 @@
 						Please confirm removing account
 						<a href="/${profile.uid}">${profile.uid}</a>
 					</p>
-					<form:form action="/remove" method="post">
-						<button type="submit" class="btn btn-danger">Confirm deleting</button>
+					<form:form action="/remove" method="post" id="form" >
+						<button id="submitBtn" type="button" class="btn btn-danger">Confirm deleting</button>
 					</form:form>
 				</div>
 			</div>

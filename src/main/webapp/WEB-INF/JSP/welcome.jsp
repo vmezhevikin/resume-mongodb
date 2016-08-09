@@ -11,7 +11,7 @@
 				</div>
 			</td>
 		</tr>
-		<tr>
+		<tr id="loadMoreBlock">
 			<td>
 				<div id="loadMoreContainer" class="text-center">
 					<button id="loadMoreBtn" class="btn btn-primary">Load more</button>
@@ -23,3 +23,4 @@
 		</tr>
 	</table>
 </div>
+<resume:modal-message />

@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <resume:edit-navtab section="Certificate" />
-<form:form action="/add/certificate?${_csrf.parameterName}=${_csrf.token}" method="post" commandName="form" enctype="multipart/form-data">
+<form:form action="/add/certificate?${_csrf.parameterName}=${_csrf.token}" method="post" id="form" commandName="form" enctype="multipart/form-data">
 	<div class="container resume-edit-block">
 		<h2 class="text-center">Certificates</h2>
 		<table class="table">
@@ -32,11 +32,10 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="align-center">
-					<button type="submit" class="btn btn-primary">Add</button>
+					<button id="submitBtn" type="button" class="btn btn-primary">Add</button>
 					<a href="/edit/certificate" class="btn btn-danger">Back</a>
 				</td>
 			</tr>
 		</table>
 	</div>
 </form:form>
-<resume:modal-message message="${message}" />

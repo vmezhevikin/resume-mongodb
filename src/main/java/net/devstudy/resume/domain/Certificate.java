@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.NotEmptyFile;
 
-public class Certificate implements Serializable, ProfileCollectionField {
+public class Certificate implements Serializable, ProfileCollectionField, Comparable<Certificate> {
 	
 	private static final long serialVersionUID = -6718545401459519784L;
 
@@ -80,7 +80,7 @@ public class Certificate implements Serializable, ProfileCollectionField {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -101,5 +101,10 @@ public class Certificate implements Serializable, ProfileCollectionField {
 		} else if (!imgSmall.equals(other.imgSmall))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Certificate other) {
+		return this.description.compareTo(other.description);
 	}
 }

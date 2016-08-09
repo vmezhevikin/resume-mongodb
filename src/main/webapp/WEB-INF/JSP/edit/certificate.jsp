@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <resume:edit-navtab section="Certificate" />
-<form:form action="/edit/certificate" method="post" commandName="form">
+<form:form action="/edit/certificate" method="post" id="form" commandName="form">
 	<div class="container resume-edit-block">
 		<h2 class="text-center">Certificates</h2>
 		<hr/>
@@ -21,11 +21,10 @@
 				<td colspan="3" class="align-center">
 					<hr/>
 					<a href="/add/certificate" type="button" class="btn btn-success">Add</a>
-					<button type="submit" class="btn btn-primary">Edit</button>
+					<button id="submitListBtn" type="button" class="btn btn-primary">Edit</button>
 				</td>
 			</tr>
 		</table>
 	</div>
 </form:form>
 <resume:modal-certificate />
-<resume:modal-message message="${message}" />

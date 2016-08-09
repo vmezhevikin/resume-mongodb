@@ -30,7 +30,6 @@ public class SignUpForm extends RecaptchaForm implements Serializable {
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String lastName;
 
-	@EnglishLanguage(withPunctuations = false)
 	@PasswordStrength
 	private String password;
 

@@ -33,6 +33,7 @@ import net.devstudy.resume.service.FindProfileService;
 import net.devstudy.resume.service.FormService;
 import net.devstudy.resume.service.StaticDataService;
 import net.devstudy.resume.util.FormUtil;
+import net.devstudy.resume.util.ProfileDataUtil;
 import net.devstudy.resume.util.DataUtil;
 import net.devstudy.resume.util.SecurityUtil;
 
@@ -265,6 +266,7 @@ public class EditProfileController {
 		if (bindingResult.getFieldErrorCount() != 0) {
 			return "edit/additional";
 		}
+		ProfileDataUtil.setEmptyProfileFieldsAsNulls(form, ProfileDataUtil.ADDITIONAL_FIELDS);
 		editProfileService.updateAdditionalInfo(SecurityUtil.getCurrentProfileId(), form);
 		addAttributeMessage(model, "Additional information: updated!");
 		return "edit/additional";

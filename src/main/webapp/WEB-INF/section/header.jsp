@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <header>
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
@@ -17,10 +18,10 @@
 			<div class="collapse navbar-collapse" id="header-navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<form action="/search" method="get" class="navbar-form" role="search">
+						<form action="/search" method="get" class="navbar-form" id="searchForm">
 							<div class="form-group">
-								<input name="query" type="text" class="form-control" placeholder="Search">
-								<input type="submit" class="btn btn-primary" value="Search" />
+								<input name="query" type="text" id="query" class="form-control" placeholder="Search" />
+								<input type="button" id="searchBtn" class="btn btn-primary" value="Search" />
 							</div>
 						</form>
 					</li>
@@ -65,7 +66,7 @@
 								</li>
 								<li role="separator" class="divider"></li>
 								<li>
-									<form:form action="/sign-out" method="post" id="signoutForm" style="none">
+									<form:form action="/sign-out" method="post" id="signoutForm">
 										<a href="#" class="dropdown-menu-aitem" onclick="document.getElementById('signoutForm').submit()">
 											<i class="fa fa-sign-out" aria-hidden="true"></i>
 											Sign out
@@ -80,3 +81,4 @@
 		</div>
 	</nav>
 </header>
+<resume:modal-message message="${message}" />

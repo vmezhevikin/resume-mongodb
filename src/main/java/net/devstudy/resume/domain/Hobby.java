@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.data.annotation.Transient;
 
-public class Hobby implements Serializable, ProfileCollectionField {
+public class Hobby implements Serializable, ProfileCollectionField, Comparable<Hobby> {
 	
 	private static final long serialVersionUID = 4900586647321986730L;
 
@@ -52,7 +52,7 @@ public class Hobby implements Serializable, ProfileCollectionField {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -63,5 +63,10 @@ public class Hobby implements Serializable, ProfileCollectionField {
 		} else if (!description.equals(other.description))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Hobby other) {
+		return this.description.compareTo(other.description);
 	}
 }

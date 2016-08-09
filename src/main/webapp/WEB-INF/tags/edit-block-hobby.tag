@@ -12,7 +12,7 @@
 </c:if>
 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 text-center hobby-block">
 	<div class="btn ${cssStyle} hobby-btn" id="hobby-div-${index}" data-hobby-ind="${index}">
-		<input name="items[${index}].checked" type="hidden" value="${hobby.checked}" id="hobby-input-${index}" />
+		<input name="items[${index}].checked" type="hidden" value="${hobby.checked}" id="hobbyInput-${index}" />
 		<input name="items[${index}].icon" type="hidden" value="${hobby.icon}" />
 		<input name="items[${index}].description" type="hidden" value="${hobby.description}" />
 		<span class="hobby-td-icon">${hobby.icon}</span>

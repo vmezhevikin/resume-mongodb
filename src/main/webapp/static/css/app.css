@@ -172,7 +172,7 @@ html {
 	width: 20%
 }
 
-#certificate-img-lg {
+#modalCertificateImg {
 	width: 100%;
 	border-radius: 5px;
 }
@@ -202,3 +202,7 @@ html {
 .modal-certificate-img {
 	width: 100%;
 }
+
+.small-img {
+	height: 100px !important;
+ }

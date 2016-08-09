@@ -1,5 +1,6 @@
 package net.devstudy.resume.service.impl;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class EditProfileServiceImpl implements EditProfileService {
 
 	@Override
 	public Profile createNewProfile(SignUpForm form) {
-		LOGGER.debug("Profile: creating new profile");
+		LOGGER.info("Profile: creating new profile");
 		Profile profile = new Profile();
 		profile.setUid(generateProfileUid(form.getFirstName(), form.getLastName()));
 		profile.setFirstName(DataUtil.capitailizeName(form.getFirstName()));
@@ -141,16 +142,17 @@ public class EditProfileServiceImpl implements EditProfileService {
 	
 	@SuppressWarnings("unchecked")
 	private <E extends ProfileCollectionField> void updateProfileCollection(String idProfile, Class<E> clazz, List<E> editedList) {
-		LOGGER.debug("Profile {}: updating {} collection", idProfile, clazz.getSimpleName());
+		LOGGER.info("Profile {}: updating {} collection", idProfile, clazz.getSimpleName());
 		Profile profile = profileRepository.findById(idProfile);
 		List<E> currentList = ProfileDataUtil.getProfileCollection(profile, clazz);
 		List<String> currentImagesList = null, editedImagesList = null;
 		if (UpdateLogicUtil.profileCollectionChanged(editedList, currentList)) {
-			LOGGER.debug("Profile {}: profile {} collection have been changed", idProfile, clazz.getSimpleName());	
+			LOGGER.info("Profile {}: profile {} collection has been changed", idProfile, clazz.getSimpleName());	
 			if ("Certificate".equals(clazz.getSimpleName())) {
 				currentImagesList = getImagesList((List<Certificate>) currentList);
 				editedImagesList = getImagesList((List<Certificate>) editedList);
 			}
+			sortCollection(editedList);
 			currentList.clear();
 			currentList.addAll(editedList);
 			profileRepository.save(profile);
@@ -158,16 +160,16 @@ public class EditProfileServiceImpl implements EditProfileService {
 				updateIndexAfterEditCollection(idProfile, clazz, editedList);
 			}
 			if ("Certificate".equals(clazz.getSimpleName())) {
-				LOGGER.debug("Profile {}: old certificate images removing", idProfile);
+				LOGGER.info("Profile {}: old certificate images removing", idProfile);
 				removeCertificatesImages(currentImagesList, editedImagesList);
 			}
 		} else {
-			LOGGER.debug("Updating profile {}: nothing to update", idProfile);
+			LOGGER.info("Updating profile {}: nothing to update", idProfile);
 		}
 	}
 	
 	private <E extends ProfileCollectionField> void updateIndexAfterEditCollection(String idProfile, Class<E> clazz, List<E> editedList) {
-		LOGGER.info("Profile {}: profile {} collection have been updated", idProfile, clazz.getSimpleName());
+		LOGGER.info("Profile {}: profile {} collection has been updated", idProfile, clazz.getSimpleName());
 		Profile profile = profileSearchRepository.findOne(idProfile);
 		List<E> currentList = ProfileDataUtil.getProfileCollection(profile, clazz);
 		currentList.clear();
@@ -176,9 +178,14 @@ public class EditProfileServiceImpl implements EditProfileService {
 		LOGGER.info("Profile {}: index has been updated", idProfile);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private <E extends ProfileCollectionField> void sortCollection(List<E> editedList) {
+		Collections.sort((List<? extends Comparable>) editedList);
+	}
+	
 	@Override
 	public void addCertificate(String idProfile, Certificate newCertificate) {
-		LOGGER.debug("Profile {}: adding new certificate", idProfile);
+		LOGGER.info("Profile {}: adding new certificate", idProfile);
 		UploadImageResult uploadResult = imageProcessorService.processProfileCertificate(newCertificate.getFile());
 		Profile profile = profileRepository.findById(idProfile);
 		newCertificate.setImg(uploadResult.getLargeImageLink());
@@ -208,10 +215,10 @@ public class EditProfileServiceImpl implements EditProfileService {
 
 	@Override
 	public void updateGeneralInfo(String idProfile, Profile editedProfile) {
-		LOGGER.debug("Profile {}; updating general info", idProfile);
+		LOGGER.info("Profile {}; updating general info", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		if (UpdateLogicUtil.profileGeneralInfoChanged(profile, editedProfile)) {
-			LOGGER.debug("Profile {}: general info has been changed", idProfile);
+			LOGGER.info("Profile {}: general info has been changed", idProfile);
 			synchronized (this) {
 				checkEmailAddressIsUnique(idProfile, editedProfile.getEmail(), editedProfile.getPhone());
 				ProfileDataUtil.copyGeneralFields(profile, editedProfile);
@@ -233,7 +240,7 @@ public class EditProfileServiceImpl implements EditProfileService {
 			}
 		}
 		else {
-			LOGGER.debug("Profile {}: nothing to update", idProfile);
+			LOGGER.info("Profile {}: nothing to update", idProfile);
 		}
 	}
 
@@ -269,38 +276,38 @@ public class EditProfileServiceImpl implements EditProfileService {
 
 	@Override
 	public void updateAdditionalInfo(String idProfile, Profile editedProfile) {
-		LOGGER.debug("Profile {}: updating additional info", idProfile);
+		LOGGER.info("Profile {}: updating additional info", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		if (UpdateLogicUtil.profileAdditionalInfoChanged(profile, editedProfile)) {
-			LOGGER.debug("Updating profile additional: profile has been changed");
+			LOGGER.info("Updating profile additional: profile has been changed");
 			profile.setAdditionalInfo(editedProfile.getAdditionalInfo());
 			profileRepository.save(profile);
 		}
 		else {
-			LOGGER.debug("Profile {}: nothing to update");
+			LOGGER.info("Profile {}: nothing to update");
 		}
 		LOGGER.info("Profile {}: additional info has been updated", idProfile);
 	}
 
 	@Override
 	public void updateContact(String idProfile, Contact editedContact) {
-		LOGGER.debug("Profile {}: updating contact info", idProfile);
+		LOGGER.info("Profile {}: updating contact info", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		Contact contact = profile.getContact();
 		if (UpdateLogicUtil.profileContactChanged(contact, editedContact)) {
-			LOGGER.debug("Profile {}: contact info has been changed");
+			LOGGER.info("Profile {}: contact info has been changed");
 			profile.setContact(editedContact);
 			profileRepository.save(profile);
 		}
 		else {
-			LOGGER.debug("Profile {}: nothing to update");
+			LOGGER.info("Profile {}: nothing to update");
 		}
 		LOGGER.info("Profile {}: contact info has been updated", idProfile);
 	}
 
 	@Override
 	public void removeProfile(String idProfile) {
-		LOGGER.debug("Profile {}: removing", idProfile);
+		LOGGER.info("Profile {}: removing", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		profileRepository.delete(profile);
 		removeProfileImages(profile);
@@ -326,7 +333,7 @@ public class EditProfileServiceImpl implements EditProfileService {
 
 	@Override
 	public void addRestoreToken(String idProfile, String token) {
-		LOGGER.debug("Profile {}: creating restore token", idProfile);
+		LOGGER.info("Profile {}: creating restore token", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		ProfileRestore restore = new ProfileRestore();
 		restore.setId(profile.getId());
@@ -343,14 +350,14 @@ public class EditProfileServiceImpl implements EditProfileService {
 
 	@Override
 	public void removeRestoreToken(String idProfile) {
-		LOGGER.debug("Profile {}: removing restore token", idProfile);
+		LOGGER.info("Profile {}: removing restore token", idProfile);
 		ProfileRestore restore = profileRestoreRepository.findByProfileId(idProfile);
 		profileRestoreRepository.delete(restore);
 	}
 
 	@Override
 	public void updatePassword(String idProfile, ChangePasswordForm form) {
-		LOGGER.debug("Profile {}: updating password", idProfile);
+		LOGGER.info("Profile {}: updating password", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		profile.setPassword(passwordEncoder.encode(form.getPassword()));
 		profileRepository.save(profile);

@@ -5,7 +5,7 @@
 <resume:edit-navtab section="Additional" />
 <div class="container resume-edit-block">
 	<h2 class="text-center">Additional information</h2>
-	<form:form action="/edit/additional" method="post" commandName="form">
+	<form:form action="/edit/additional" method="post" id="form" commandName="form">
 		<input type="hidden" name="country" value="stub" />
 		<input type="hidden" name="city" value="stub" />
 		<input type="hidden" name="birthdayString" value="1990-01-01" />
@@ -35,10 +35,9 @@
 			</tr>
 			<tr>
 				<td class="align-center">
-					<button type="submit" class="btn btn-primary">Edit</button>
+					<button id="submitBtn" type="button" class="btn btn-primary">Edit</button>
 				</td>
 			</tr>
 		</table>
 	</form:form>
 </div>
-<resume:modal-message message="${message}" />

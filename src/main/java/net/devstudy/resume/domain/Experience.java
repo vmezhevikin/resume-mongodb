@@ -16,9 +16,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.FirstFieldLessThanSecond;
+import net.devstudy.resume.util.ProfileDataUtil;
 
 @FirstFieldLessThanSecond(firstField = "startingDate", secondField = "completionDate", message = "Completion date must be after starting date")
-public class Experience implements Serializable, ProfileCollectionField {
+public class Experience implements Serializable, ProfileCollectionField, Comparable<Experience> {
 	
 	private static final long serialVersionUID = 6158879936084081673L;
 
@@ -309,5 +310,14 @@ public class Experience implements Serializable, ProfileCollectionField {
 		} else if (!startingDate.equals(other.startingDate))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Experience other) {
+		if (ProfileDataUtil.compareFields(other.completionDate, this.completionDate) != 0) {
+			return ProfileDataUtil.compareFields(other.completionDate, this.completionDate);
+		} else {
+			return ProfileDataUtil.compareFields(other.startingDate, this.startingDate);
+		}
 	}
 }

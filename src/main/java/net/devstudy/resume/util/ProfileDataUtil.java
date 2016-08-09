@@ -54,4 +54,21 @@ public class ProfileDataUtil {
 			throw new RuntimeException("Can't write collection fields to " + object, e);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> int  compareFields(Comparable<T> first, Comparable<T> second) {
+		if (first == null) {
+			if (second == null) {
+				return 0;
+			} else {
+				return 1;
+			}
+		} else {
+			if (second == null) {
+				return -1;
+			} else {
+				return first.compareTo((T) second);
+			}
+		}
+	}
 }

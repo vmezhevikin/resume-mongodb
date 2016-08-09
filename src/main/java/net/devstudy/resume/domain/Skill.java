@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 
-public class Skill implements Serializable, ProfileCollectionField {
+public class Skill implements Serializable, ProfileCollectionField, Comparable<Skill> {
 	
 	private static final long serialVersionUID = 1649774983085049619L;
 
@@ -47,7 +47,7 @@ public class Skill implements Serializable, ProfileCollectionField {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -63,5 +63,10 @@ public class Skill implements Serializable, ProfileCollectionField {
 		} else if (!description.equals(other.description))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Skill other) {
+		return this.category.compareTo(other.category);
 	}
 }

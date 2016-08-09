@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 
-public class Language implements Serializable, ProfileCollectionField {
+public class Language implements Serializable, ProfileCollectionField, Comparable<Language> {
 	
 	private static final long serialVersionUID = 7843447412112290470L;
 
@@ -87,5 +87,10 @@ public class Language implements Serializable, ProfileCollectionField {
 		} else if (!type.equals(other.type))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Language other) {
+		return this.name.compareTo(other.name);
 	}
 }
