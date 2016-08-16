@@ -2,17 +2,20 @@ package net.devstudy.resume.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.devstudy.resume.Constants;
 import net.devstudy.resume.domain.Certificate;
@@ -20,21 +23,23 @@ import net.devstudy.resume.domain.Contact;
 import net.devstudy.resume.domain.Hobby;
 import net.devstudy.resume.domain.Profile;
 import net.devstudy.resume.form.CertificateForm;
-import net.devstudy.resume.form.ChangePasswordForm;
 import net.devstudy.resume.form.CourseForm;
 import net.devstudy.resume.form.EducationForm;
+import net.devstudy.resume.form.EmailForm;
 import net.devstudy.resume.form.ExperienceForm;
 import net.devstudy.resume.form.HobbyForm;
 import net.devstudy.resume.form.LanguageForm;
+import net.devstudy.resume.form.PasswordForm;
 import net.devstudy.resume.form.SkillForm;
-import net.devstudy.resume.model.CurrentProfile;
+import net.devstudy.resume.form.UidForm;
+import net.devstudy.resume.model.JsonResponse;
 import net.devstudy.resume.service.EditProfileService;
 import net.devstudy.resume.service.FindProfileService;
 import net.devstudy.resume.service.FormService;
 import net.devstudy.resume.service.StaticDataService;
+import net.devstudy.resume.util.DataUtil;
 import net.devstudy.resume.util.FormUtil;
 import net.devstudy.resume.util.ProfileDataUtil;
-import net.devstudy.resume.util.DataUtil;
 import net.devstudy.resume.util.SecurityUtil;
 
 @Controller
@@ -62,8 +67,11 @@ public class EditProfileController {
 	private int educationYearsAgo;
 
 	@RequestMapping(value = "/my-profile", method = RequestMethod.GET)
-	public String getMyProfile(@AuthenticationPrincipal CurrentProfile currentProfile) {
-		return "redirect:/" + currentProfile.getUsername();
+	public String getMyProfile() {
+		String currentProfileId = SecurityUtil.getCurrentProfileId();
+		Profile profile = findProfileService.findById(currentProfileId);
+		editProfileService.updateLastVisitDate(currentProfileId);
+		return "redirect:/" + profile.getUid();
 	}
 
 	@RequestMapping(value = "/edit/general", method = RequestMethod.GET)
@@ -78,7 +86,7 @@ public class EditProfileController {
 		if (bindingResult.hasErrors()) {
 			return "edit/general";
 		}
-		Profile preparedForm = FormUtil.setBlankItemsAsNulls(form);
+		Profile preparedForm = FormUtil.setBlankGeneralFieldsAsNulls(form);
 		editProfileService.updateGeneralInfo(SecurityUtil.getCurrentProfileId(), preparedForm);
 		if (!form.getFile().isEmpty()) {
 			return "redirect:/edit/general";
@@ -99,7 +107,7 @@ public class EditProfileController {
 		if (bindingResult.hasErrors()) {
 			return "edit/contact";
 		}
-		Contact preparedForm = FormUtil.setBlankItemsAsNulls(form);
+		Contact preparedForm = FormUtil.setBlankContatcFieldsAsNulls(form);
 		editProfileService.updateContact(SecurityUtil.getCurrentProfileId(), preparedForm);
 		addAttributeMessage(model, "Contact information: updated!");
 		return "edit/contact";
@@ -272,25 +280,56 @@ public class EditProfileController {
 		return "edit/additional";
 	}
 
-	@RequestMapping(value = "/edit/password", method = RequestMethod.GET)
+	@RequestMapping(value = "/edit/settings", method = RequestMethod.GET)
 	public String getEditPassword(Model model) {
-		addAttributeForm(model, "password");
-		return "edit/password";
+		model.addAttribute("emailForm", formService.produceForm("email"));
+		model.addAttribute("uidForm", formService.produceForm("uid"));
+		return "edit/settings";
 	}
 
 	@RequestMapping(value = "/edit/password", method = RequestMethod.POST)
-	public String postEditPassword(@Valid @ModelAttribute("form") ChangePasswordForm form, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors())
-			return "edit/password";
-
-		Profile profile = findProfileService.findById(SecurityUtil.getCurrentProfileId());
-		editProfileService.updatePassword(profile.getId(), form);
-		return "redirect:/edit/password-change";
+	@ResponseBody
+	public JsonResponse postEditPassword(@Valid @ModelAttribute("passwordForm") PasswordForm form, BindingResult bindingResult, Model model, HttpServletRequest request) {
+		if (bindingResult.hasErrors()) {
+			return new JsonResponse("Error", "Bad credentials");
+		}
+		editProfileService.updatePassword(SecurityUtil.getCurrentProfileId(), form);
+		return new JsonResponse("OK", "Your new password saved");
 	}
 
-	@RequestMapping(value = "/edit/password-change", method = RequestMethod.GET)
-	public String getEditPasswordChange() {
-		return "password-change-success";
+	@RequestMapping(value = "/edit/email", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResponse postEditEmail(@Valid @ModelAttribute("emailForm") EmailForm form, BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			return new JsonResponse("Error", "Bad credentials");
+		}
+		editProfileService.addConfirmEmailToken(SecurityUtil.getCurrentProfileId(), SecurityUtil.generateNewConfirmEmailToken(), form);
+		return new JsonResponse("OK", "Check your new email to confirm");
+	}
+	
+	@RequestMapping(value = "/edit/email/{token}", method = RequestMethod.GET)
+	public String getEditEmail(@PathVariable("token") String token, HttpServletRequest request) {
+		Profile profile = findProfileService.findByConfirmEmailToken(token);
+		if (profile == null) {
+			return "error";
+		}
+		String confirmedEmail = editProfileService.removeConfirmEmailToken(profile.getId());
+		if (StringUtils.isEmpty(confirmedEmail)) {
+			return "error";
+		} else {
+			editProfileService.updateEmail(SecurityUtil.getCurrentProfileId(), confirmedEmail);
+			return "redirect:/edit/settings";
+		}
+	}
+
+	@RequestMapping(value = "/edit/uid", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResponse postEditUid(@Valid @ModelAttribute("uidForm") UidForm form, BindingResult bindingResult, Model model, HttpServletRequest request) {
+		if (bindingResult.hasErrors()) {
+			return new JsonResponse("Error", "Bad credentials");
+		}
+		editProfileService.updateUid(SecurityUtil.getCurrentProfileId(), form);
+		return new JsonResponse("OK", "Your new UID: " + form.getUid());
 	}
 
 	private void addAttributesMinMaxYearForEducation(Model model) {

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,19 @@ import net.devstudy.resume.domain.Hobby;
 import net.devstudy.resume.domain.Language;
 import net.devstudy.resume.domain.Profile;
 import net.devstudy.resume.domain.ProfileCollectionField;
+import net.devstudy.resume.domain.ProfileConfirmEmail;
+import net.devstudy.resume.domain.ProfileConfirmRegistration;
 import net.devstudy.resume.domain.ProfileRestore;
 import net.devstudy.resume.domain.Skill;
 import net.devstudy.resume.exception.CantCompleteClientRequestException;
-import net.devstudy.resume.form.ChangePasswordForm;
+import net.devstudy.resume.form.EmailForm;
+import net.devstudy.resume.form.PasswordForm;
 import net.devstudy.resume.form.SignUpForm;
+import net.devstudy.resume.form.UidForm;
 import net.devstudy.resume.model.UploadImageResult;
 import net.devstudy.resume.repository.search.ProfileSearchRepository;
+import net.devstudy.resume.repository.storage.ProfileConfirmEmailRepository;
+import net.devstudy.resume.repository.storage.ProfileConfirmRegistrationRepository;
 import net.devstudy.resume.repository.storage.ProfileRepository;
 import net.devstudy.resume.repository.storage.ProfileRestoreRepository;
 import net.devstudy.resume.service.EditProfileService;
@@ -34,6 +41,7 @@ import net.devstudy.resume.service.ImageProcessorService;
 import net.devstudy.resume.service.NotificationManagerService;
 import net.devstudy.resume.util.DataUtil;
 import net.devstudy.resume.util.ProfileDataUtil;
+import net.devstudy.resume.util.SecurityUtil;
 import net.devstudy.resume.util.UpdateLogicUtil;
 
 @Service
@@ -49,6 +57,12 @@ public class EditProfileServiceImpl implements EditProfileService {
 	
 	@Autowired
 	private ProfileRestoreRepository profileRestoreRepository;
+	
+	@Autowired
+	private ProfileConfirmRegistrationRepository profileRegistrationRepository;
+	
+	@Autowired
+	private ProfileConfirmEmailRepository profileConfirmEmailRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -68,41 +82,81 @@ public class EditProfileServiceImpl implements EditProfileService {
 	@Value("${generate.uid.max.try.count}")
 	private int generateUidMaxTryCount;
 
-	@Value("${email.restorelink.address}")
-	private String emailRestorelinkAddress;
-
 	@Override
-	public Profile createNewProfile(SignUpForm form) {
-		LOGGER.info("Profile: creating new profile");
+	public Profile createNewNotActiveProfile(SignUpForm form) {
+		LOGGER.info("Profile: creating new not active profile");
 		Profile profile = new Profile();
-		profile.setUid(generateProfileUid(form.getFirstName(), form.getLastName()));
-		profile.setFirstName(DataUtil.capitailizeName(form.getFirstName()));
-		profile.setLastName(DataUtil.capitailizeName(form.getLastName()));
-		profile.setPassword(passwordEncoder.encode(form.getPassword()));
-		profile.setActive(false);
-		ProfileDataUtil.setAllProfileCollectionsAsEmty(profile);
-		profileRepository.save(profile);
-		registerIndexAfterCreateProfile(profile);
+		synchronized (this) {
+			checkEmailIsUnique(form.getEmail());
+			profile.setEmail(form.getEmail());
+			profile.setPassword(passwordEncoder.encode(form.getPassword()));
+			profile.setCreated(DataUtil.getCurrentDate());
+			profile.setActive(false);
+			profileRepository.save(profile);
+		}
 		return profile;
 	}
 
-	private String generateProfileUid(String firstName, String lastName) {
-		String baseUid = DataUtil.generateProfileUid(firstName, lastName);
-		String uid = baseUid;
+	@Override
+	public void addConfirmRegistrtionToken(String idProfile, String token) {
+		LOGGER.info("Profile {}: creating confirm registration token", idProfile);
+		Profile profile = profileRepository.findById(idProfile);
+		ProfileConfirmRegistration registration = new ProfileConfirmRegistration();
+		registration.setId(profile.getId());
+		registration.setProfile(profile);
+		registration.setCreated(DataUtil.getCurrentDate());
+		registration.setToken(token);
+		profileRegistrationRepository.save(registration);
+		sendConfirmRegistrationLinkNotification(profile, token);
+	}
+
+	private void sendConfirmRegistrationLinkNotification(final Profile profile, final String token) {
+		notificationManagerService.sendConfirmRegistrationLink(profile, token);
+		LOGGER.info("Profile {}: confirm registration token " + token + " has been send", profile.getId(), token);
+	}
+
+	@Override
+	public void removeConfirmRegistrtionToken(String idProfile) {
+		LOGGER.info("Profile {}: removing confirm registration token", idProfile);
+		ProfileConfirmRegistration registration = profileRegistrationRepository.findByProfileId(idProfile);
+		profileRegistrationRepository.delete(registration);
+	}
+
+	@Override
+	public Profile activateProfile(Profile profile) {
+		profile.setUid(generateProfileUid(profile.getId()));
+		profile.setActive(true);
+		ProfileDataUtil.setAllProfileCollectionsAsEmty(profile);
+		profileRepository.save(profile);
+		registerIndexAfterActivateProfile(profile);
+		return profile;
+	}
+
+	private String generateProfileUid(String idProfile) {
+		String uid = SecurityUtil.generateProfileUid();
 		for (int i = 0; profileRepository.countByUid(uid) > 0; i++) {
-			uid = DataUtil.regenerateUidWithRandomSuffix(baseUid, generateUidAlphabet, generateUidSuffixlength);
+			uid = SecurityUtil.generateProfileUid();
 			if (i >= generateUidMaxTryCount) {
-				throw new CantCompleteClientRequestException("Can't generate unique uid for profile: " + baseUid + ": maxTryCountToGenerateUid detected");
+				throw new CantCompleteClientRequestException("Can't generate unique uid for profile: " + idProfile + ": maxTryCountToGenerateUid detected");
 			}
 		}
 		return uid;
 	}
 
-	private void registerIndexAfterCreateProfile(final Profile profile) {
-		LOGGER.info("Profile {}: has been created", profile.getUid());
+	private void registerIndexAfterActivateProfile(final Profile profile) {
+		LOGGER.info("Profile {}: has been activated", profile.getUid());
 		ProfileDataUtil.setAllProfileCollectionsAsEmty(profile);
 		profileSearchRepository.save(profile);
 		LOGGER.info("Profile {}: index has been created", profile.getUid());
+	}
+
+	@Override
+	public void updateLastVisitDate(String idProfile) {
+		LOGGER.info("Profile {}: updating last visit", idProfile);
+		Profile profile = profileRepository.findById(idProfile);
+		profile.setLastVisit(DataUtil.getCurrentDate());
+		profileRepository.save(profile);
+		LOGGER.info("Profile {}: last visit has been updated", idProfile);
 	}
 	
 	@Override
@@ -190,7 +244,9 @@ public class EditProfileServiceImpl implements EditProfileService {
 		Profile profile = profileRepository.findById(idProfile);
 		newCertificate.setImg(uploadResult.getLargeImageLink());
 		newCertificate.setImgSmall(uploadResult.getSmallImageLink());
-		profile.getCertificate().add(newCertificate);
+		List<Certificate> editedList = profile.getCertificate();
+		editedList.add(newCertificate);
+		sortCollection(editedList);
 		profileRepository.save(profile);
 		updateIndexAfterEditCollection(idProfile, Certificate.class, profile.getCertificate());
 	}
@@ -220,11 +276,14 @@ public class EditProfileServiceImpl implements EditProfileService {
 		if (UpdateLogicUtil.profileGeneralInfoChanged(profile, editedProfile)) {
 			LOGGER.info("Profile {}: general info has been changed", idProfile);
 			synchronized (this) {
-				checkEmailAddressIsUnique(idProfile, editedProfile.getEmail(), editedProfile.getPhone());
+				checkEmailIsUnique(idProfile, editedProfile.getEmail());
+				checkPhoneIsUnique(idProfile, editedProfile.getPhone());
 				ProfileDataUtil.copyGeneralFields(profile, editedProfile);
-				profile.setBirthday(DataUtil.generateDateFromString(editedProfile.getBirthdayString()));
-				boolean profileWasActiveBeforeEdit = profile.getActive();
-				profile.setActive(true);
+				if (StringUtils.isEmpty(editedProfile.getBirthdayString())) {
+					profile.setBirthday(null);
+				} else {
+					profile.setBirthday(DataUtil.generateDateFromString(editedProfile.getBirthdayString()));
+				}
 				if (!editedProfile.getFile().isEmpty()) {
 					UploadImageResult uploadResult = imageProcessorService.processProfilePhoto(editedProfile.getFile());
 					imageProcessorService.removeProfilePhoto(profile.getPhoto());
@@ -234,30 +293,10 @@ public class EditProfileServiceImpl implements EditProfileService {
 				}
 				profileRepository.save(profile);
 				updateIndexAfterEditGeneralInfo(idProfile, profile);
-				if (!profileWasActiveBeforeEdit) {
-					sendProfileActivatedNotification(profile);
-				}
 			}
 		}
 		else {
 			LOGGER.info("Profile {}: nothing to update", idProfile);
-		}
-	}
-
-	private void checkEmailAddressIsUnique(String idProfile, String email, String phone) {
-		Profile profile = profileRepository.findByEmail(email);
-		if (profile != null) {
-			if (!idProfile.equals(profile.getId())) {
-				LOGGER.error("Profile with email " + email + " already exist. Can't update profile");
-				throw new CantCompleteClientRequestException("Profile with email " + email + " already exist. Can't update profile");
-			}
-		}
-		profile = profileRepository.findByPhone(phone);
-		if (profile != null) {
-			if (!idProfile.equals(profile.getId())) {
-				LOGGER.error("Profile with phone " + phone + " already exist. Can't update profile");
-				throw new CantCompleteClientRequestException("Profile with phone " + phone + " already exist. Can't update profile");
-			}
 		}
 	}
 
@@ -267,11 +306,6 @@ public class EditProfileServiceImpl implements EditProfileService {
 		profileSearchRepository.delete(profile);
 		profileSearchRepository.save(updatedProfile);
 		LOGGER.info("Profile {}: index has been updated", idProfile);
-	}
-
-	private void sendProfileActivatedNotification(final Profile profile) {
-		LOGGER.info("Profile {}: profile has been completed, now it's active", profile.getId());
-		notificationManagerService.sendProfileActive(profile);
 	}
 
 	@Override
@@ -338,14 +372,16 @@ public class EditProfileServiceImpl implements EditProfileService {
 		ProfileRestore restore = new ProfileRestore();
 		restore.setId(profile.getId());
 		restore.setProfile(profile);
+		restore.setCreated(DataUtil.getCurrentDate());
 		restore.setToken(token);
 		profileRestoreRepository.save(restore);
-		sendRestoreLinkNotification(profile, emailRestorelinkAddress + token);
+		LOGGER.info("Profile {}: restore token " + token + " has been created", profile.getId(), token);
+		sendRestoreLinkNotification(profile, token);
 	}
 
-	private void sendRestoreLinkNotification(final Profile profile, final String restoreLink) {
-		LOGGER.info("Profile {}: restore link has been created", profile.getId());
-		notificationManagerService.sendRestoreAccessLink(profile, restoreLink);
+	private void sendRestoreLinkNotification(final Profile profile, final String token) {
+		notificationManagerService.sendRestoreAccessLink(profile, token);
+		LOGGER.info("Profile {}: restore token " + token + " has been send", profile.getId(), token);
 	}
 
 	@Override
@@ -353,19 +389,111 @@ public class EditProfileServiceImpl implements EditProfileService {
 		LOGGER.info("Profile {}: removing restore token", idProfile);
 		ProfileRestore restore = profileRestoreRepository.findByProfileId(idProfile);
 		profileRestoreRepository.delete(restore);
+		LOGGER.info("Profile {}: restore token removed", idProfile);
 	}
 
 	@Override
-	public void updatePassword(String idProfile, ChangePasswordForm form) {
+	public void updatePassword(String idProfile, PasswordForm form) {
 		LOGGER.info("Profile {}: updating password", idProfile);
 		Profile profile = profileRepository.findById(idProfile);
 		profile.setPassword(passwordEncoder.encode(form.getPassword()));
 		profileRepository.save(profile);
+		LOGGER.info("Profile {}: password has been changed", profile.getId());
 		sendPasswordChangedNotification(profile);
 	}
 
 	private void sendPasswordChangedNotification(final Profile profile) {
-		LOGGER.info("Profile {}: password has been changed", profile.getId());
 		notificationManagerService.sendPasswordChanged(profile);
+		LOGGER.info("Profile {}: password changed notification has been send", profile.getId());
+	}
+
+	@Override
+	public void addConfirmEmailToken(String idProfile, String token, EmailForm form) {
+		LOGGER.info("Profile {}: creating restore token", idProfile);
+		Profile profile = profileRepository.findById(idProfile);
+		ProfileConfirmEmail confirm = new ProfileConfirmEmail();
+		confirm.setId(profile.getId());
+		confirm.setProfile(profile);
+		confirm.setCreated(DataUtil.getCurrentDate());
+		confirm.setToken(token);
+		confirm.setEmail(form.getEmail());
+		profileConfirmEmailRepository.save(confirm);
+		LOGGER.info("Profile {}: confirm email token " + token + " has been created", profile.getId(), token);
+		sendEmailConfirmNotification(profile, token, form.getEmail());
+	}
+
+	private void sendEmailConfirmNotification(final Profile profile, String token, String email) {
+		notificationManagerService.sendConfirmEmailLink(profile, token, email);
+		LOGGER.info("Profile {}: confirm email token " + token + " has been send", profile.getId(), token);
+	}
+
+	@Override
+	public String removeConfirmEmailToken(String idProfile) {
+		LOGGER.info("Profile {}: removing confirm email token", idProfile);
+		ProfileConfirmEmail confirm = profileConfirmEmailRepository.findByProfileId(idProfile);
+		String confirmedEmail = confirm.getEmail();
+		profileConfirmEmailRepository.delete(confirm);
+		LOGGER.info("Profile {}: confirm email token removed", idProfile);
+		return confirmedEmail;
+	}
+
+	@Override
+	public void updateEmail(String idProfile, String email) {
+		LOGGER.info("Profile {}: updating email", idProfile);
+		synchronized (this) {
+			checkEmailIsUnique(idProfile, email);
+			Profile profile = profileRepository.findById(idProfile);
+			profile.setEmail(email);
+			profileRepository.save(profile);
+			LOGGER.info("Profile {}: email has been changed", profile.getId());
+		}
+	}
+
+	@Override
+	public void updateUid(String idProfile, UidForm form) {
+		LOGGER.info("Profile {}: updating uid", idProfile);
+		synchronized (this) {
+			checkUidIsUnique(idProfile, form.getUid());
+			Profile profile = profileRepository.findById(idProfile);
+			profile.setUid(form.getUid());
+			profileRepository.save(profile);
+			LOGGER.info("Profile {}: uid has been changed", profile.getId());
+		}
+	}
+	
+	private void checkEmailIsUnique(String email) {
+		if (profileRepository.countByEmail(email) != 0) {
+			throw new CantCompleteClientRequestException("Profile with email " + email + " already exist. Can't create profile");
+		}
+	}
+
+	private void checkEmailIsUnique(String idProfile, String email) {
+		Profile profile = profileRepository.findByEmail(email);
+		if (profile != null) {
+			if (!idProfile.equals(profile.getId())) {
+				LOGGER.error("Profile with email " + email + " already exist. Can't update profile");
+				throw new CantCompleteClientRequestException("Profile with email " + email + " already exist. Can't update profile");
+			}
+		}
+	}
+		
+	private void checkPhoneIsUnique(String idProfile, String phone) {
+		Profile profile = profileRepository.findByPhone(phone);
+		if (profile != null) {
+			if (!idProfile.equals(profile.getId())) {
+				LOGGER.error("Profile with phone " + phone + " already exist. Can't update profile");
+				throw new CantCompleteClientRequestException("Profile with phone " + phone + " already exist. Can't update profile");
+			}
+		}
+	}
+	
+	private void checkUidIsUnique(String idProfile, String uid) {
+		Profile profile = profileRepository.findByUid(uid);
+		if (profile != null) {
+			if (!idProfile.equals(profile.getId())) {
+				LOGGER.error("Profile with uid " + uid + " already exist. Can't update profile");
+				throw new CantCompleteClientRequestException("Profile with uid " + uid + " already exist. Can't update profile");
+			}
+		}
 	}
 }

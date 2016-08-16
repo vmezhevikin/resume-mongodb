@@ -20,7 +20,6 @@ public final class SecurityUtil {
 		if (authentication == null) {
 			return null;
 		}
-
 		Object principal = authentication.getPrincipal();
 		if (principal instanceof CurrentProfile) {
 			return (CurrentProfile) principal;
@@ -32,18 +31,6 @@ public final class SecurityUtil {
 
 	public static String getCurrentProfileId() {
 		CurrentProfile currentProfile = getCurrentProfile();
-
-		if (currentProfile != null) {
-			return currentProfile.getId();
-		}
-		else {
-			return null;
-		}
-	}
-
-	public static String getCurrentProfileUid() {
-		CurrentProfile currentProfile = getCurrentProfile();
-
 		if (currentProfile != null) {
 			return currentProfile.getUsername();
 		}
@@ -67,14 +54,34 @@ public final class SecurityUtil {
 	}
 
 	public static String generateNewActionUid() {
-		return UUID.randomUUID().toString();
+		return generateUuid(true);
 	}
 
 	public static String generateNewRestoreAccessToken() {
-		return UUID.randomUUID().toString().replace("-", "");
+		return generateUuid(false);
+	}
+
+	public static String generateNewConfirmRegistrationToken() {
+		return generateUuid(false);
+	}
+
+	public static String generateNewConfirmEmailToken() {
+		return generateUuid(false);
 	}
 
 	public static String generatePassword() {
-		return UUID.randomUUID().toString().replace("-", "").substring(0, 15);
+		return generateUuid(false).substring(0, 15);
+	}
+	
+	public static String generateProfileUid() {
+		return generateUuid(false).substring(0, 8);
+	}
+	
+	private static String generateUuid(boolean withHyphens) {
+		if (withHyphens) {
+			return UUID.randomUUID().toString();
+		} else {
+			return UUID.randomUUID().toString().replace("-", "");
+		}
 	}
 }

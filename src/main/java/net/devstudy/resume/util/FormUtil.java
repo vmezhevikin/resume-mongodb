@@ -33,13 +33,18 @@ public class FormUtil {
 		return allItems;
 	}
 
-	public static Contact setBlankItemsAsNulls(Contact form) {
+	public static Contact setBlankContatcFieldsAsNulls(Contact form) {
 		ProfileDataUtil.setEmptyProfileFieldsAsNulls(form, ProfileDataUtil.CONTACT_FIELDS);
 		return form;
 	}
 
-	public static Profile setBlankItemsAsNulls(Profile form) {
+	public static Profile setBlankAdditionalFieldsAsNulls(Profile form) {
 		ProfileDataUtil.setEmptyProfileFieldsAsNulls(form, ProfileDataUtil.ADDITIONAL_FIELDS);
+		return form;
+	}
+
+	public static Profile setBlankGeneralFieldsAsNulls(Profile form) {
+		ProfileDataUtil.setEmptyProfileFieldsAsNulls(form, ProfileDataUtil.GENERAL_FIELDS);
 		return form;
 	}
 }

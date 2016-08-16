@@ -1,13 +1,9 @@
 package net.devstudy.resume.domain;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.joda.time.LocalDate;
@@ -21,12 +17,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.devstudy.resume.annotation.constraints.DateFormat;
 import net.devstudy.resume.annotation.constraints.EnglishLanguage;
-import net.devstudy.resume.annotation.constraints.FieldImageOrFileNotEmpty;
 import net.devstudy.resume.annotation.constraints.Phone;
+import net.devstudy.resume.util.DataUtil;
 
 @Document(indexName = "profile")
 @org.springframework.data.mongodb.core.mapping.Document(collection = "profile")
-@FieldImageOrFileNotEmpty(imageField = "photo", fileField = "file")
 public class Profile extends AbstractDomain<String> implements Serializable {
 	
 	private static final long serialVersionUID = 4419584168346691423L;
@@ -37,43 +32,39 @@ public class Profile extends AbstractDomain<String> implements Serializable {
 	private String uid;
 
 	@JsonIgnore
+	private String email;
+
+	@JsonIgnore
 	private String password;
 
 	private Boolean active;
 
+	@EnglishLanguage
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String firstName;
 
+	@EnglishLanguage
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String lastName;
 
 	@JsonIgnore
 	private String fullName;
 
-	@Size(min = 1)
 	@EnglishLanguage
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String country;
 
-	@Size(min = 1)
 	@EnglishLanguage
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String city;
 
 	private Date birthday;
 
-	@Size(min = 1)
 	@DateFormat
 	@JsonIgnore
 	@Transient
 	private String birthdayString;
 
-	@Size(min = 1)
-	@EnglishLanguage
-	@Email
-	@JsonIgnore
-	@SafeHtml(whitelistType = WhiteListType.NONE)
-	private String email;
-
-	@Size(min = 1)
 	@Phone
 	@JsonIgnore
 	@SafeHtml(whitelistType = WhiteListType.NONE)
@@ -98,6 +89,9 @@ public class Profile extends AbstractDomain<String> implements Serializable {
 
 	@JsonIgnore
 	private Date created;
+	
+	@JsonIgnore
+	private Date lastVisit;
 
 	private List<Certificate> certificate;
 
@@ -211,8 +205,7 @@ public class Profile extends AbstractDomain<String> implements Serializable {
 
 	public String getBirthdayString() {
 		if (birthdayString == null && birthday != null) {
-			LocalDate birthdate = new LocalDate(birthday);
-			birthdayString = birthdate.toString("yyyy-MM-dd");
+			birthdayString = DataUtil.generateStringFromDate(birthday);
 		}
 		return birthdayString;
 	}
@@ -284,8 +277,16 @@ public class Profile extends AbstractDomain<String> implements Serializable {
 		return created;
 	}
 
-	public void setCreated(Timestamp created) {
+	public void setCreated(Date created) {
 		this.created = created;
+	}
+
+	public Date getLastVisit() {
+		return lastVisit;
+	}
+
+	public void setLastVisit(Date lastVisit) {
+		this.lastVisit = lastVisit;
 	}
 
 	public List<Certificate> getCertificate() {

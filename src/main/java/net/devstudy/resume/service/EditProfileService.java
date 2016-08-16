@@ -13,12 +13,22 @@ import net.devstudy.resume.domain.Hobby;
 import net.devstudy.resume.domain.Language;
 import net.devstudy.resume.domain.Profile;
 import net.devstudy.resume.domain.Skill;
-import net.devstudy.resume.form.ChangePasswordForm;
+import net.devstudy.resume.form.EmailForm;
+import net.devstudy.resume.form.PasswordForm;
 import net.devstudy.resume.form.SignUpForm;
+import net.devstudy.resume.form.UidForm;
 
 public interface EditProfileService {
 	
-	@Nonnull Profile createNewProfile(@Nonnull SignUpForm form);
+	@Nonnull Profile createNewNotActiveProfile(@Nonnull SignUpForm form);
+
+	void addConfirmRegistrtionToken(@Nonnull String idProfile, @Nonnull String token);
+
+	void removeConfirmRegistrtionToken(@Nonnull String idProfile);
+	
+	@Nonnull Profile activateProfile(@Nonnull Profile profile);
+	
+	void updateLastVisitDate(@Nonnull String idProfile);
 	
 	void updateSkill(String idProfile, @Nonnull List<Skill> editedList);
 
@@ -48,5 +58,13 @@ public interface EditProfileService {
 
 	void removeRestoreToken(String idProfile);
 
-	void updatePassword(String idProfile, @Nonnull ChangePasswordForm form);
+	void updatePassword(String idProfile, @Nonnull PasswordForm form);
+
+	void addConfirmEmailToken(@Nonnull String idProfile, @Nonnull String token, @Nonnull EmailForm form);
+
+	@Nonnull String removeConfirmEmailToken(@Nonnull String idProfile);
+
+	void updateEmail(String idProfile, String email);
+
+	void updateUid(String idProfile, @Nonnull UidForm form);
 }

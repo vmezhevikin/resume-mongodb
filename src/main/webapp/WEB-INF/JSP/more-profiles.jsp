@@ -16,17 +16,24 @@
 						</a>
 					</div>
 					<div class="media-body">
-						<p class="text-primary">
-							<span>${profile.fullName} </span>
-							<c:if test="${profile.active}">(${profile.getAge()})</c:if>
-						</p>
-						<c:if test="${profile.active}">
-							<h5>${profile.objective}</h5>
-							<p>
-								<strong>
-									<small>${profile.city}, ${profile.country}</small>
-								</strong>
+						<c:if test="${profile.firstName != null || profile.lastName != null}">
+							<p class="text-primary">
+								<span>${profile.fullName} </span>
+								<c:if test="${profile.birthday != null}">
+									<span>(${profile.getAge()})</span>
+								</c:if>
 							</p>
+						</c:if>
+						<c:if test="${profile.objective != null}">
+							<h5>${profile.objective}</h5>
+						</c:if>
+						<c:if test="${profile.city != null}">
+							<strong><small>${profile.city}</small></strong>
+						</c:if>
+						<c:if test="${profile.country != null}">
+							<strong><small>${profile.country}</small></strong>
+						</c:if>
+						<c:if test="${profile.summary != null}">
 							<p>
 								<small>${profile.summary}</small>
 							</p>

@@ -39,4 +39,6 @@ public interface ProfileRepository extends PagingAndSortingRepository<Profile, S
 	List<Profile> findByExperienceCompletionDateBefore(Date date);
 	
 	Page<Profile> findAllByActiveTrue(Pageable pageable);
+	
+	List<Profile> findByLastVisitBefore(Date date);
 }

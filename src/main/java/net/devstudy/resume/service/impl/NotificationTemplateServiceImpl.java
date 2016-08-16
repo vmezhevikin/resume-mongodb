@@ -20,7 +20,7 @@ import org.springframework.core.io.PathResource;
 import org.springframework.stereotype.Service;
 
 import net.devstudy.resume.component.NotificationContentResolver;
-import net.devstudy.resume.exception.CantCompleteClientRequestException;
+import net.devstudy.resume.exception.NotificationServiceException;
 import net.devstudy.resume.model.NotificationMessage;
 import net.devstudy.resume.service.NotificationTemplateService;
 
@@ -78,7 +78,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
 			return htmlTemplate.toString();
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Can't find email template file " + filePath);
-			return "";
+			throw new NotificationServiceException("Can't find email template file " + filePath, e);
 		} finally {
 			if (scanner != null) {
 				scanner.close();
@@ -90,7 +90,7 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
 	public NotificationMessage createNotificationMessage(String templateName, Object model) {
 		NotificationMessage message = notificationTemplates.get(templateName);
 		if (message == null)
-			throw new CantCompleteClientRequestException("Notification template '" + templateName + "' not found");
+			throw new NotificationServiceException("Notification template '" + templateName + "' not found");
 		String resolvedSubject = notificationContentResolver.resolve(message.getSubject(), model);
 		String resolvedContent = notificationContentResolver.resolve(message.getContent(), model);
 		return new NotificationMessage(resolvedSubject, resolvedContent);

@@ -10,7 +10,7 @@ import net.devstudy.resume.domain.ProfileCollectionField;
 
 public class ProfileDataUtil {
 	
-	public static final String[] GENERAL_FIELDS = { "birthday", "country", "city", "email", "phone", "objective", "summary" };
+	public static final String[] GENERAL_FIELDS = { "firstName", "lastName", "birthday", "country", "city", "phone", "objective", "summary" };
 	public static final String[] CONTACT_FIELDS = { "skype", "vkontakte", "facebook", "linkedin", "github", "stackoverflow" };
 	public static final String[] ADDITIONAL_FIELDS = { "additionalInfo" };
 	public static final String[] COLLECTION_FIELDS = { "certificate", "course", "education", "experience", "hobby", "language", "skill" };

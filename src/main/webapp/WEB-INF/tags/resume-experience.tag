@@ -7,8 +7,8 @@
 			<i class="fa fa-briefcase" aria-hidden="true"></i>
 			Experience
 			<sec:authorize access="hasAuthority('USER')">
-				<sec:authentication var="currProfilieUid" property="principal.username" />
-				<c:if test="${currProfilieUid == profile.uid}">
+				<sec:authentication var="currProfilieId" property="principal.username" />
+				<c:if test="${currProfilieId == profile.id}">
 					<a class="pull-right" href="/edit/experience">
 						<i class="fa fa-cog" aria-hidden="true"></i>
 					</a>

@@ -27,7 +27,7 @@
 							<select name="items[${index}].completionMonth" class="form-control">
 								<option value="${null}">Not finished</option>
 								<c:forEach var="month" begin="1" end="12">
-									<option value="${month-1}" ${(month - 1) == course.completionMonth ? ' selected="selected"' : ''}>${monthName[month-1]}</option>
+									<option value="${month}" ${(month) == course.completionMonth ? ' selected="selected"' : ''}>${monthName[month-1]}</option>
 								</c:forEach>
 							</select>
 						</td>

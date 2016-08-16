@@ -7,8 +7,8 @@
 			<i class="fa fa-university" aria-hidden="true"></i>
 			Education
 			<sec:authorize access="hasAuthority('USER')">
-				<sec:authentication var="currProfilieUid" property="principal.username" />
-				<c:if test="${currProfilieUid == profile.uid}">
+				<sec:authentication var="currProfilieId" property="principal.username" />
+				<c:if test="${currProfilieId == profile.id}">
 					<a class="pull-right" href="/edit/education">
 						<i class="fa fa-cog" aria-hidden="true"></i>
 					</a>

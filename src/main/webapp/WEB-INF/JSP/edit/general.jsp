@@ -3,14 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <resume:edit-navtab section="General" />
-<form:form action="/edit/general?${_csrf.parameterName}=${_csrf.token}" method="post" id="form" commandName="form" enctype="multipart/form-data">
+<form:form action="/edit/general?${_csrf.parameterName}=${_csrf.token}" method="post" commandName="form" enctype="multipart/form-data">
 	<div class="container resume-edit-block">
-		<h2 class="text-center">${form.fullName}</h2>
+		<h2 class="text-center">General information</h2>
 		<input type="hidden" name="fullName" value="${form.fullName}" />
 		<table class="table">
 			<tr>
 				<td class="general-td-items">
-					<strong>Photo *</strong>
+					<strong>Photo</strong>
 				</td>
 				<td class="general-td-fileds">
 					<c:if test="${form.photo != null}">
@@ -47,7 +47,26 @@
 			</tr>
 			<tr>
 				<td>
-					<strong>Birthday *</strong>
+					<strong>First Name</strong>
+				</td>
+				<td>
+					<input name="firstName" type="text" class="form-control" placeholder="First Name" value="${form.firstName}" />
+					<form:errors path="firstName" cssClass="alert alert-danger" role="alert" element="div" />
+				</td>
+				<td rowspan="2" class="text-muted">Provide your real name. Use only English letters.</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Last Name</strong>
+				</td>
+				<td>
+					<input name="lastName" type="text" class="form-control" placeholder="Last Name" value="${form.lastName}" />
+					<form:errors path="lastName" cssClass="alert alert-danger" role="alert" element="div" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Birthday</strong>
 				</td>
 				<td>
 					<input name="birthdayString" type="text" class="form-control" placeholder="Birthday" value="${form.birthdayString}" />
@@ -57,7 +76,7 @@
 			</tr>
 			<tr>
 				<td>
-					<strong>City *</strong>
+					<strong>City</strong>
 				</td>
 				<td>
 					<input name="city" type="text" class="form-control" placeholder="City" value="${form.city}" />
@@ -67,7 +86,7 @@
 			</tr>
 			<tr>
 				<td>
-					<strong>Country *</strong>
+					<strong>Country</strong>
 				</td>
 				<td>
 					<input name="country" type="text" class="form-control" placeholder="Country" value="${form.country}" />
@@ -77,26 +96,7 @@
 			</tr>
 			<tr>
 				<td>
-					<strong>Email *</strong>
-				</td>
-				<td>
-					<input name="email" type="text" class="form-control" placeholder="Email" value="${form.email}" />
-					<form:errors path="email" cssClass="alert alert-danger" role="alert" element="div" />
-				</td>
-				<td class="text-muted">
-					1. It is desirable that email contains your name and surname as in your passport. If the specified name is already taken, contraction is
-					possible.
-					<br />
-					2. It is not recommended to use creative email, such as TheBestDeveloper@gmail.com, lakomka@gmail.com, etc.
-					<br />
-					3. It is not recommended to use the domain name of the employer where you are currently working.
-					<br />
-					4. It is recommended for programmers to use domain @gmail.com.
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong>Phone *</strong>
+					<strong>Phone</strong>
 				</td>
 				<td>
 					<input name="phone" type="text" class="form-control" placeholder="Phone" value="${form.phone}" />
@@ -107,7 +107,7 @@
 			</tr>
 			<tr>
 				<td>
-					<strong>Objective *</strong>
+					<strong>Objective</strong>
 				</td>
 				<td>
 					<input name="objective" type="text" class="form-control" placeholder="Objective" value="${form.objective}" />
@@ -117,7 +117,7 @@
 			</tr>
 			<tr>
 				<td>
-					<strong>Summary *</strong>
+					<strong>Summary</strong>
 				</td>
 				<td>
 					<textarea name="summary" class="form-control" rows="6" placeholder="Summary">${form.summary}</textarea>
@@ -134,7 +134,7 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="align-center">
-					<button id="submitBtn" type="button" class="btn btn-primary">Edit</button>
+					<button type="submit" class="btn btn-primary">Edit</button>
 				</td>
 			</tr>
 		</table>

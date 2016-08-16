@@ -9,14 +9,16 @@ import org.springframework.stereotype.Service;
 import net.devstudy.resume.domain.Certificate;
 import net.devstudy.resume.domain.Hobby;
 import net.devstudy.resume.form.CertificateForm;
-import net.devstudy.resume.form.ChangePasswordForm;
+import net.devstudy.resume.form.PasswordForm;
 import net.devstudy.resume.form.CourseForm;
 import net.devstudy.resume.form.EducationForm;
+import net.devstudy.resume.form.EmailForm;
 import net.devstudy.resume.form.ExperienceForm;
 import net.devstudy.resume.form.HobbyForm;
 import net.devstudy.resume.form.LanguageForm;
 import net.devstudy.resume.form.SignUpForm;
 import net.devstudy.resume.form.SkillForm;
+import net.devstudy.resume.form.UidForm;
 import net.devstudy.resume.service.FindProfileDataService;
 import net.devstudy.resume.service.FindProfileService;
 import net.devstudy.resume.service.FormService;
@@ -68,7 +70,11 @@ public class FormServiceImpl implements FormService {
 		case "additional":
 			return findProfileService.findById(currentProfileId);
 		case "password":
-			return new ChangePasswordForm();
+			return new PasswordForm();
+		case "email":
+			return new EmailForm(findProfileService.findById(currentProfileId));
+		case "uid":
+			return new UidForm(findProfileService.findById(currentProfileId));
 		case "sign-up":
 			return new SignUpForm();
 		default:

@@ -12,10 +12,22 @@
 			<value>password-changed.html</value>
 		</property>
 	</bean>
-	<bean id="profileActiveNotification" class="net.devstudy.resume.model.NotificationMessage">
+	<bean id="confirmRegistrationNotification" class="net.devstudy.resume.model.NotificationMessage">
 		<property name="subject" value="Welcome to MyResume" />
 		<property name="content">
-			<value>profile-active.html</value>
+			<value>confirm-registration.html</value>
+		</property>
+	</bean>
+	<bean id="returnReminderNotification" class="net.devstudy.resume.model.NotificationMessage">
+		<property name="subject" value="Come back to MyResume" />
+		<property name="content">
+			<value>return-reminder.html</value>
+		</property>
+	</bean>
+	<bean id="confirmEmailNotification" class="net.devstudy.resume.model.NotificationMessage">
+		<property name="subject" value="Confirm email" />
+		<property name="content">
+			<value>confirm-email.html</value>
 		</property>
 	</bean>
 </beans>

@@ -6,18 +6,24 @@
 		<div class="panel-title">
 			<i class="fa fa-briefcase" aria-hidden="true"></i>
 			Objective
-			<sec:authorize access="hasAuthority('USER')"><sec:authentication var="currProfilieUid" property="principal.username" />
-				<c:if test="${currProfilieUid == profile.uid}">
-				<a class="pull-right" href="/edit/general">
-					<i class="fa fa-cog" aria-hidden="true"></i>
-				</a></c:if>
+			<sec:authorize access="hasAuthority('USER')">
+				<sec:authentication var="currProfilieId" property="principal.username" />
+				<c:if test="${currProfilieId == profile.id}">
+					<a class="pull-right" href="/edit/general">
+						<i class="fa fa-cog" aria-hidden="true"></i>
+					</a>
+				</c:if>
 			</sec:authorize>
 		</div>
 	</div>
 	<div class="panel-body">
-		<h4>${profile.objective}</h4>
-		<strong>Summary:</strong>
-		<br />
-		${profile.summary}.
+		<c:if test="${profile.objective != null}">
+			<h4>${profile.objective}</h4>
+		</c:if>
+		<c:if test="${profile.summary != null}">
+			<strong>Summary:</strong>
+			<br />
+			<span>${profile.summary}</span>
+		</c:if>
 	</div>
 </div>

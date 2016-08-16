@@ -43,11 +43,6 @@ public class TestDataMongoGenerator
 	private static final String[] LANGUAGE_TYPE = { "All", "Writing", "Speaking" };
 	private static final String[] LANGUAGE_LEVEL = { "Beginner", "Elementary", "Pre-intrmediate", "Intermediate", "Upper-Intermediate", "Advanced",
 			"Proficiency" };
-	private static final String[] HOBBIES = { "Cycling", "Handball", "Football", "Basketball", "Bowling", "Boxing", "Volleyball", "Baseball",
-			"Skating", "Skiing", "Table tennis", "Tennis", "Weightlifting", "Automobiles", "Book reading", "Cricket", "Photo", "Shopping", "Cooking",
-			"Codding", "Animals", "Traveling", "Movie", "Painting", "Darts", "Fishing", "Kayak slalom", "Games of chance", "Ice hockey",
-			"Roller skating", "Swimming", "Diving", "Golf", "Shooting", "Rowing", "Camping", "Archery", "Pubs", "Music", "Computer games",
-			"Authorship", "Singing", "Foreign lang", "Billiards", "Skateboarding", "Collecting", "Badminton", "Disco" };
 	private static final String[] SKILLS_CATEGORIES = { "Languages", "DBMS", "Web", "Java", "IDE", "CVS", "Web Servers", "Build system", "Cloud" };
 	private static final String[] SKILLS_DESC = { "Java, SQL, PLSQL", "Mysql, Postgresql", "HTML, CSS, JS, Foundation, JQuery, Bootstrap",
 			"Threads, IO, JAXB, GSON, Servlets, Logback, JSP, JSTL, JDBC, Apache Commons, Google+ Social API, Spring MVC, Spring Data JPA, Spring Security, Hibernate JPA, Facebook Social API",
@@ -76,30 +71,30 @@ public class TestDataMongoGenerator
 			"Kharkiv National University of Radioelectronics" };
 	private static final String[] DEPARTMENTS = { "Computer-driven system and network", "Programming systems",
 			"Intelligence system of problem-solving" };
-	private static final String[] HOBBY_ICONS = { "<i class='fa fa-paw' aria-hidden='true'></i>", "<i class='fa fa-bullseye' aria-hidden='true'></i>",
+	private static final String[] HOBBY_ICONS = { "<i class='fa fa-paw' aria-hidden='true'></i>", "<i class='flaticon-archery'></i>",
 			"<i class='fa fa-pencil-square-o' aria-hidden='true'></i>", "<i class='fa fa-car' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-futbol-o' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-futbol-o' aria-hidden='true'></i>",
-			"<i class='fa fa-book' aria-hidden='true'></i>", "<i class='fa fa-futbol-o' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-leaf' aria-hidden='true'></i>",
-			"<i class='fa fa-code' aria-hidden='true'></i>", "<i class='fa fa-star' aria-hidden='true'></i>",
+			"<i class='flaticon-badminton'></i>", "<i class='flaticon-baseball'></i>",
+			"<i class='flaticon-basketball'></i>", "<i class='flaticon-billiard'></i>",
+			"<i class='fa fa-book' aria-hidden='true'></i>", "<i class='flaticon-bowling'></i>",
+			"<i class='flaticon-boxing-1'></i>", "<i class='fa fa-leaf' aria-hidden='true'></i>",
+			"<i class='fa fa-code' aria-hidden='true'></i>", "<i class='flaticon-detective'></i>",
 			"<i class='fa fa-gamepad' aria-hidden='true'></i>", "<i class='fa fa-cutlery' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-bicycle' aria-hidden='true'></i>",
+			"<i class='flaticon-cricket'></i>", "<i class='flaticon-bicycle-1'></i>",
 			"<i class='fa fa-bullseye' aria-hidden='true'></i>", "<i class='fa fa-users' aria-hidden='true'></i>",
-			"<i class='fa fa-tint' aria-hidden='true'></i>", "<i class='fa fa-life-ring' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-language' aria-hidden='true'></i>",
-			"<i class='fa fa-list-alt' aria-hidden='true'></i>", "<i class='fa fa-futbol-o' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-futbol-o' aria-hidden='true'></i>",
-			"<i class='fa fa-tint' aria-hidden='true'></i>", "<i class='fa fa-film' aria-hidden='true'></i>",
+			"<i class='flaticon-diving'></i>", "<i class='flaticon-anchor'></i>",
+			"<i class='flaticon-football'></i>", "<i class='fa fa-language' aria-hidden='true'></i>",
+			"<i class='flaticon-queen'></i>", "<i class='flaticon-golf'></i>",
+			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='flaticon-hockey'></i>",
+			"<i class='flaticon-kayak'></i>", "<i class='fa fa-film' aria-hidden='true'></i>",
 			"<i class='fa fa-music' aria-hidden='true'></i>", "<i class='fa fa-paint-brush' aria-hidden='true'></i>",
 			"<i class='fa fa-camera' aria-hidden='true'></i>", "<i class='fa fa-beer' aria-hidden='true'></i>",
-			"<i class='fa fa-star' aria-hidden='true'></i>", "<i class='fa fa-futbol-o' aria-hidden='true'></i>",
+			"<i class='flaticon-roller-skate'></i>", "<i class='flaticon-sailboat'></i>",
 			"<i class='fa fa-crosshairs' aria-hidden='true'></i>", "<i class='fa fa-shopping-basket' aria-hidden='true'></i>",
-			"<i class='fa fa-microphone' aria-hidden='true'></i>", "<i class='fa fa-star' aria-hidden='true'></i>",
-			"<i class='fa fa-star' aria-hidden='true'></i>", "<i class='fa fa-star' aria-hidden='true'></i>",
-			"<i class='fa fa-tint' aria-hidden='true'></i>", "<i class='fa fa-futbol-o' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-map' aria-hidden='true'></i>",
-			"<i class='fa fa-futbol-o' aria-hidden='true'></i>", "<i class='fa fa-star' aria-hidden='true'></i>" };
+			"<i class='fa fa-microphone' aria-hidden='true'></i>", "<i class='flaticon-skateboard'></i>",
+			"<i class='flaticon-snowboard'></i>", "<i class='flaticon-ski'></i>",
+			"<i class='flaticon-swimmer'></i>", "<i class='flaticon-ping-pong'></i>",
+			"<i class='flaticon-tennis'></i>", "<i class='fa fa-map' aria-hidden='true'></i>",
+			"<i class='flaticon-volleyball'></i>", "<i class='flaticon-weightlifting-1'></i>" };
 	private static final String[] HOBBY_NAMES = { "Animals", "Archery", "Authorship", "Automobiles", "Badminton", "Baseball", "Basketball",
 			"Billiards", "Book reading", "Bowling", "Boxing", "Camping", "Coding", "Collecting", "Computer games", "Cooking", "Cricket", "Cycling",
 			"Darts", "Disco", "Diving", "Fishing", "Football", "Foreign language", "Games of chance", "Golf", "Handball", "Ice hockey",
@@ -142,7 +137,9 @@ public class TestDataMongoGenerator
 		getDB(mongoClient).getCollection("staticHobbyData").drop();
 		getDB(mongoClient).getCollection("profile").drop();
 		getDB(mongoClient).getCollection("profileRestore").drop();
-		getDB(mongoClient).getCollection("rememberMeToken").drop();
+		getDB(mongoClient).getCollection("rememberMeToken").drop(); 
+		getDB(mongoClient).getCollection("profileConfirmEmail").drop();
+		getDB(mongoClient).getCollection("profileConfirmRegistration").drop();
 		System.out.println("DB cleared");
 	}
 
@@ -153,6 +150,8 @@ public class TestDataMongoGenerator
 		insertProfile(mongoClient);
 		insertProfileRestore(mongoClient);
 		insertRememberMeToken(mongoClient);
+		insertProfileConfirmRegistration(mongoClient);
+		insertProfileConfirmEmail(mongoClient);
 		insertIndexes(mongoClient);
 		System.out.println("Data have been inserted");
 	}
@@ -194,8 +193,8 @@ public class TestDataMongoGenerator
 					.append("hobby", generateHobby())
 					.append("language", generateLanguage())
 					.append("skill", generateSkill());
-			
 			collection.insert(profile);
+			System.out.println("\t" + firstName + " " + lastName);
 		}
 	}
 
@@ -204,6 +203,14 @@ public class TestDataMongoGenerator
 	}
 
 	private static void insertRememberMeToken(MongoClient mongoClient) {
+		// empty
+	}
+
+	private static void insertProfileConfirmRegistration(MongoClient mongoClient) {
+		// empty
+	}
+
+	private static void insertProfileConfirmEmail(MongoClient mongoClient) {
 		// empty
 	}
 	
@@ -325,7 +332,7 @@ public class TestDataMongoGenerator
 		BasicDBList hobby = new BasicDBList();
 		int count = rand.nextInt(6);
 		for (int i = 0; i < count; i++) {
-			BasicDBObject item = new BasicDBObject("description", HOBBIES[rand.nextInt(HOBBIES.length)]);
+			BasicDBObject item = new BasicDBObject("description", HOBBY_NAMES[rand.nextInt(HOBBY_NAMES.length)]);
 			hobby.add(item);
 		}
 		return hobby;
@@ -356,7 +363,7 @@ public class TestDataMongoGenerator
 	private static BasicDBObject generateProfile(String firstName, String lastName, File file) throws IOException {
 		ImageLinks photoLinks = generatePhoto(file);
 
-		BasicDBObject profileObj = new BasicDBObject("uid", (firstName + "-" + lastName).toLowerCase())
+		BasicDBObject profileObj = new BasicDBObject("uid", firstName + lastName)
 				.append("password", PASSWORD_HASH)
 				.append("active", true)
 				.append("firstName", firstName)
@@ -371,7 +378,8 @@ public class TestDataMongoGenerator
 				.append("summary", SUMMARIES[rand.nextInt(SUMMARIES.length)])
 				.append("photo", photoLinks.largeImage)
 				.append("photoSmall", photoLinks.smallImage)
-				.append("created", LocalDate.now().toDate());
+				.append("created", LocalDate.now().toDate())
+				.append("lastVisit", LocalDate.now().toDate());
 		return profileObj;
 	}
 	
@@ -454,5 +462,14 @@ public class TestDataMongoGenerator
 				mongoClient.close();
 			}
 		}
+		/*for (int i = 0; i < HOBBY_ICONS.length; i++) {
+			String txt = HOBBY_ICONS[i]
+					.replace("<i class='", "")
+					.replace("' aria-hidden='true'></i>", "")
+					.replace("'></i>", "")
+					.replace("fa fa-", "")
+					.replace("flaticon-", "");
+			System.out.println(i + "\t" + txt);
+		}*/
 	}
 }

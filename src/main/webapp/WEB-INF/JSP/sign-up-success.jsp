@@ -6,20 +6,23 @@
 				<div class="panel-heading">
 					<div class="panel-title">
 						<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-						Sign up succeeded
+						Sign up success
 					</div>
 				</div>
 				<div class="panel-body">
-					<p>
-						After completing the registration, your account will be available here:
-						<a href="${appHost}/${profile.uid}">${appHost}/${profile.uid}</a>
-					</p>
-					<p>
-						Your UID:
-						<strong>${profile.uid}</strong>
-						. Use this UID to log in.
-					</p>
-					<a href="/my-profile" class="btn btn-primary">Complete</a>
+					<h4>Congratulations!</h4>
+					<p>You successfully registered.</p>
+					<p>Now your account will be available here: <a href="${appHost}/${profile.uid}">${appHost}/${profile.uid}</a></p>
+					<p>Your UID: <strong>${profile.uid}</strong>. Use this UID to sign in.</p>
+					<p>You may change your UID later.</p>
+					<p>In order to avoid storing not relevant information, old records are deleted:</p>
+					<ul>
+						<li>Practical experience records after: ${practicYearsAgo} years</li>
+						<li>Education records after: ${courseYearsAgo} years</li>
+						<li>Courses records after: ${educationYearsAgo} years</li>
+						<li>Full profiles after not being active: ${profileLastVisit} years</li>
+					</ul>
+					<a href="/my-profile" class="btn btn-primary">Continue</a>
 				</div>
 			</div>
 		</div>

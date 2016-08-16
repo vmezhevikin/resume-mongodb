@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
@@ -21,9 +22,8 @@ public class DateFormatConstraintValidator implements ConstraintValidator<DateFo
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		if (value == null)
+		if (StringUtils.isEmpty(value))
 			return true;
-
 		if (!Pattern.matches("^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$", value))
 			return false;
 		try {

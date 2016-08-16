@@ -1,5 +1,7 @@
 package net.devstudy.resume.domain;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +16,8 @@ public class ProfileRestore {
 	private Profile profile;
 
 	private String token;
+	
+	private Date created;
 
 	public String getId() {
 		return id;
@@ -37,6 +41,14 @@ public class ProfileRestore {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 	@Override

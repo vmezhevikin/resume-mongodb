@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <resume:edit-navtab section="Contact" />
-<form:form action="/edit/contact" method="post" id="form" commandName="form">
+<form:form action="/edit/contact" method="post" commandName="form">
 	<div class="container resume-edit-block">
 		<h2 class="text-center">Additional contacts: skype, social networks, etc.</h2>
 		<table class="table">
@@ -84,7 +84,7 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="align-center">
-					<button id="submitBtn" type="button" class="btn btn-primary">Edit</button>
+					<button type="submit" class="btn btn-primary">Edit</button>
 				</td>
 			</tr>
 		</table>

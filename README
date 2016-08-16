@@ -7,3 +7,60 @@ Base project:
 	https://github.com/vmezhevikin/resume
 Difference:
 	database postgresql -> mongoDB
+	
+Refactoring:
+	Jun 24
+	Changed base project. DB changed to MongoDB
+	
+	Aug 01
+	Refactoring:
+		renamed:
+			static data collections (staticSkillData, staticHobbyData)
+			QuartzSchedulerConfig
+			AutoWiringSpringBeanJobFactory was moved to components
+		added:
+			constraint annotation for validating empty image file
+			FormService for producing form
+			Util classes (FormUtil, ObjectDataUtil, ProfileDataUtil, RequestDataUtil, UpdateLogicUtil)
+		refactoring:
+			PublicDataController (merged common parts of welcome and search, more-profiles requests)
+			EditProfileController
+			EditProfileServiceImpl (merged edit profile collections methods)
+			FacebookService
+			jsp files (styles -> app.css, all scripts -> app.js)
+			app.css
+			app.js
+		fixed:
+			constraint validators
+			validation messages, logging messages
+			showing only completed profiles at welcome and search results pages
+			added synchronized blocks while check email for uniqueness
+			edit hobby page (checkbox -> buttons)
+			mistakes
+	
+	Aug 02, Aug 09
+		refactoring:
+			processing forms and submit using jquery
+			app.css
+			app.js
+		added:
+			implementation Comparable<E> to profile collections
+		fixed:
+			added sorting collections before saving
+			mistakes
+	
+	
+	Aug 16
+		refactoring:
+			app.css
+			app.js
+			email notifications
+		fixed:
+			/error page caused by empty search query
+			/edit/hobby page - added icons for all hobbies
+			/edit/skills page - removed possibility to choose one category several times
+			whole sign up proccess (sign up demand only email and password, confirm registration by confirm email, ability to change uid, first name, last name)
+		edited:
+			/edit/general information page
+		added:
+			/edit/settings page (for editing uid, email, password)

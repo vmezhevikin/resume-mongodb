@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="resume" tagdir="/WEB-INF/tags"%>
 <resume:edit-navtab section="Hobby" />
-<form:form action="/edit/hobby" method="post" id="form" commandName="form">
+<form:form action="/edit/hobby" method="post" commandName="form">
 	<div class="container resume-edit-block">
 		<h2 class="text-center">Hobbies</h2>
 		<hr />
@@ -27,7 +27,7 @@
 			</tr>
 			<tr>
 				<td class="align-center">
-					<button id="submitBtn" type="button" class="btn btn-primary">Edit</button>
+					<button type="submit" class="btn btn-primary">Edit</button>
 				</td>
 			</tr>
 		</table>

@@ -9,8 +9,7 @@
 				<div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
 					<div class="panel panel-default panel-padding">
 						<h4 class="text-center">
-							Search results for:
-							<strong>${query}</strong>
+							Search results for: "<strong>${query}</strong>"
 						</h4>
 						<div class="resume-search-text">
 							Searched in:

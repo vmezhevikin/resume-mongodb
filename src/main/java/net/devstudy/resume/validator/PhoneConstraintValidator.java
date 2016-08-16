@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.devstudy.resume.annotation.constraints.Phone;
 
 public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
@@ -15,10 +17,9 @@ public class PhoneConstraintValidator implements ConstraintValidator<Phone, Stri
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		if (value == null) {
+		if (StringUtils.isEmpty(value)) {
 			return true;
 		}
-
 		return Pattern.matches("^([+]{1})([0-9]{3})([0-9]{1,4})([0-9]{7,12})$", value);
 	}
 }

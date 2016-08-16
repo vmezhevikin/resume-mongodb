@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="/static/css/bootstrap.css">
 		<link rel="stylesheet" href="/static/css/bootstrap-theme.css">
 		<link rel="stylesheet" href="/static/css/font-awesome.css">
+		<link rel="stylesheet" href="/static/css/flaticon.css">
 		<link rel="stylesheet" href="/static/css/app.css">
 	</c:otherwise>
 </c:choose>

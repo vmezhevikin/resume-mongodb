@@ -35,7 +35,7 @@ public class ResumeFilter extends AbstractFilter {
 	
 	private void logRequest(String remoteAddr, String requestUrl, String requestMethod) {
 		if (!requestUrl.contains("media") && !requestUrl.contains("static")) {
-			LOGGER.info("IP: {} requested URL: {}, method: {}", remoteAddr, requestUrl, requestMethod);
+			LOGGER.info("IP: {} URL: {}, method: {}", remoteAddr, requestUrl, requestMethod);
 		}
 	}
 

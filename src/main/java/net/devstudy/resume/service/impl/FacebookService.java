@@ -65,7 +65,7 @@ public class FacebookService implements SocialService<User> {
 
 	@Override
 	public Profile createNewProfileViaSocailNetwork(User user) {	
-		LOGGER.debug("Profile: creating new profile via Facebook");
+		LOGGER.info("Profile: creating new profile via Facebook");
 		Profile profile = new Profile();
 		synchronized (this) {
 			checkEmailAddressIsUnique(user.getEmail());
@@ -103,18 +103,17 @@ public class FacebookService implements SocialService<User> {
 	private void setDataFromUserName(Profile profile, User user) {
 		String firstName = translitConverter.translit(user.getFirstName().replace(" ", ""));
 		String lastName = translitConverter.translit(user.getLastName().replace(" ", ""));
-		profile.setUid(generateProfileUid(firstName, lastName));
+		profile.setUid(generateProfileUid(user));
 		profile.setFirstName(DataUtil.capitailizeName(firstName));
 		profile.setLastName(DataUtil.capitailizeName(lastName));
 	}
 
-	private String generateProfileUid(String firstName, String lastName) {
-		String baseUid = DataUtil.generateProfileUid(firstName, lastName);
-		String uid = baseUid;
+	private String generateProfileUid(User user) {
+		String uid = SecurityUtil.generateProfileUid();
 		for (int i = 0; profileRepository.countByUid(uid) > 0; i++) {
-			uid = DataUtil.regenerateUidWithRandomSuffix(baseUid, generateUidAlphabet, generateUidSuffixlength);
+			uid = SecurityUtil.generateProfileUid();
 			if (i >= generateUidMaxTryCount) {
-				throw new CantCompleteClientRequestException("Can't generate unique uid for profile: " + baseUid + ": maxTryCountToGenerateUid detected");
+				throw new CantCompleteClientRequestException("Can't generate unique uid for profile: " + user.getEmail() + ": maxTryCountToGenerateUid detected");
 			}
 		}
 		return uid;

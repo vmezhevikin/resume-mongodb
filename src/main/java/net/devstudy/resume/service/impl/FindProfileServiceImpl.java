@@ -14,9 +14,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import net.devstudy.resume.domain.Profile;
+import net.devstudy.resume.domain.ProfileConfirmEmail;
+import net.devstudy.resume.domain.ProfileConfirmRegistration;
 import net.devstudy.resume.domain.ProfileRestore;
 import net.devstudy.resume.model.CurrentProfile;
 import net.devstudy.resume.repository.search.ProfileSearchRepository;
+import net.devstudy.resume.repository.storage.ProfileConfirmEmailRepository;
+import net.devstudy.resume.repository.storage.ProfileConfirmRegistrationRepository;
 import net.devstudy.resume.repository.storage.ProfileRepository;
 import net.devstudy.resume.repository.storage.ProfileRestoreRepository;
 import net.devstudy.resume.service.FindProfileService;
@@ -34,6 +38,12 @@ public class FindProfileServiceImpl implements FindProfileService, UserDetailsSe
 	
 	@Autowired
 	private ProfileRestoreRepository profileRestoreRepository;
+	
+	@Autowired
+	private ProfileConfirmRegistrationRepository profileRegistrationRepository;
+	
+	@Autowired
+	private ProfileConfirmEmailRepository profileConfirmEmailRepository;
 
 	@Override
 	public Profile findByUid(String uid) {
@@ -74,13 +84,15 @@ public class FindProfileServiceImpl implements FindProfileService, UserDetailsSe
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Profile profile = findByUniqueId(username);
-		if (profile != null) {
-			return new CurrentProfile(profile);
+		if (profile == null) {
+			LOGGER.error("Profile not found by uid/email/phone {}", username);
+			throw new UsernameNotFoundException("Profile not found by uid/email/phone " + username);
 		}
-		else {
-			LOGGER.error("Profile not found by " + username);
-			throw new UsernameNotFoundException("Profile not found by " + username);
+		if (!profile.getActive()) {
+			LOGGER.warn("Profile with uid/email/phone {} is not active", username);
+			throw new UsernameNotFoundException("Profile with uid/email/phone " + username + " is not active");
 		}
+		return new CurrentProfile(profile);
 	}
 
 	@Override
@@ -89,14 +101,31 @@ public class FindProfileServiceImpl implements FindProfileService, UserDetailsSe
 	}
 
 	@Override
-	public Profile findByToken(String token) {
+	public Profile findByRestoreToken(String token) {
 		ProfileRestore restore = profileRestoreRepository.findByToken(token);
 		return restore.getProfile();
 	}
 
 	@Override
-	public List<Profile> findNotCompletedProfilesCreatedBefore(Date date) {
+	public Profile findByConfirmRegistrationToken(String token) {
+		ProfileConfirmRegistration registration = profileRegistrationRepository.findByToken(token);
+		return registration.getProfile();
+	}
+
+	@Override
+	public Profile findByConfirmEmailToken(String token) {
+		ProfileConfirmEmail confirmEmail = profileConfirmEmailRepository.findByToken(token);
+		return confirmEmail.getProfile();
+	}
+
+	@Override
+	public List<Profile> findNotActiveProfilesCreatedBefore(Date date) {
 		return profileRepository.findByActiveFalseAndCreatedBefore(date);
+	}
+
+	@Override
+	public List<Profile> findProfilesVisitedBefore(Date date) {
+		return profileRepository.findByLastVisitBefore(date);
 	}
 
 	@Override

@@ -29,7 +29,7 @@
 					<configuration>
 						<warSourceDirectory>src/main/webapp</warSourceDirectory>
 						<failOnMissingWebXml>false</failOnMissingWebXml>
-						<!-- <warSourceExcludes>/media/**, /static/css/style.min.css, /static/css/script.min.js</warSourceExcludes> -->
+						<!-- <warSourceExcludes>/media/**</warSourceExcludes> -->
 					</configuration>
 				</plugin>
 			</plugins>
@@ -94,6 +94,7 @@
 								<cssSourceFile>bootstrap.css</cssSourceFile>
 								<cssSourceFile>bootstrap-theme.css</cssSourceFile>
 								<cssSourceFile>font-awesome.css</cssSourceFile>
+								<cssSourceFile>flaticon.css</cssSourceFile>
 								<cssSourceFile>app.css</cssSourceFile>
 							</cssSourceFiles>
 							<jsSourceDir>/static/js</jsSourceDir>

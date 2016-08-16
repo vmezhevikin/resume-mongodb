@@ -18,10 +18,10 @@
 			<div class="collapse navbar-collapse" id="header-navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<form action="/search" method="get" class="navbar-form" id="searchForm">
+						<form action="/search" method="get" class="navbar-form">
 							<div class="form-group">
 								<input name="query" type="text" id="query" class="form-control" placeholder="Search" />
-								<input type="button" id="searchBtn" class="btn btn-primary" value="Search" />
+								<input type="submit" class="btn btn-primary" value="Search" />
 							</div>
 						</form>
 					</li>
@@ -36,8 +36,7 @@
 					<sec:authorize access="hasAuthority('USER')">
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<sec:authentication property="principal.fullName" />
-								<span class="caret"></span>
+								<i class="fa fa-cog" aria-hidden="true"></i>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
@@ -53,9 +52,9 @@
 									</a>
 								</li>
 								<li>
-									<a href="/edit/password">
-										<i class="fa fa-unlock-alt" aria-hidden="true"></i>
-										Password
+									<a href="/edit/settings">
+										<i class="fa fa-cogs" aria-hidden="true"></i>
+										Settings
 									</a>
 								</li>
 								<li>
@@ -66,8 +65,8 @@
 								</li>
 								<li role="separator" class="divider"></li>
 								<li>
-									<form:form action="/sign-out" method="post" id="signoutForm">
-										<a href="#" class="dropdown-menu-aitem" onclick="document.getElementById('signoutForm').submit()">
+									<form:form action="/sign-out" method="post" id="signOutForm">
+										<a class="dropdown-menu-aitem" id="signOutBtn">
 											<i class="fa fa-sign-out" aria-hidden="true"></i>
 											Sign out
 										</a>

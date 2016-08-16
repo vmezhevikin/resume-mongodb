@@ -12,29 +12,16 @@
 					</div>
 				</div>
 				<div class="panel-body">
-					<p class="text-danger">
-						<strong>Warning!</strong>
-						<br />
-						<strong>Your name can not be changed after registration. Provide your real name.</strong>
-					</p>
 					<form:form action="/sign-up" method="post" commandName="form">
 						<div class="form-group">
-							<label>First name</label>
-							<c:set var="firstNamePopoverText" value="Firstname:
-								provide your real name (you won't be able to change it,
-								it will be used to generate your uid); 
-								use only english language only; don't use any symbols." />
-							<input name="firstName" type="text" class="form-control" placeholder="Example: Richard" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${firstNamePopoverText}" />
-							<form:errors path="firstName" cssClass="alert alert-danger" role="alert" element="div" />
-						</div>
-						<div class="form-group">
-							<label>Last name</label>
-							<c:set var="lastNamePopoverText" value="Lastname:
-								provide your real name (you won't be able to change it,
-								it will be used to generate your uid); 
-								use only english language only; don't use any symbols." />
-							<input name="lastName" type="text" class="form-control" placeholder="Example: Hendricks" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${lastNamePopoverText}" />
-							<form:errors path="lastName" cssClass="alert alert-danger" role="alert" element="div" />
+							<label>Email</label>
+							<c:set var="emailPopoverText" value="Email:
+								provide your real email; 
+								this adress will be shown at your page; 
+								this adress will be used to send notifications; 
+								this adress will be used for confirmation of your registration." />
+							<input name="email" type="text" class="form-control" placeholder="Email" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${emailPopoverText}" />
+							<form:errors path="email" cssClass="alert alert-danger" role="alert" element="div" />
 						</div>
 						<div class="form-group">
 							<label>Password</label>

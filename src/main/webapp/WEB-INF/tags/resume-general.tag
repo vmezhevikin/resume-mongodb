@@ -9,92 +9,99 @@
 			<img src="/static/img/blank-photo.jpg" class="img-rounded img-responsive resume-general-img" alt="Photo">
 		</c:if>
 	</div>
-	<h3 class="text-center">${profile.fullName}</h3>
-	<c:if test="${profile.active == true}">
-		<p class="text-center">
-			<strong>${profile.city}, ${profile.country}</strong>
-		</p>
+	<c:if test="${profile.firstName != null || profile.lastName != null}">
+		<h3 class="text-center">${profile.fullName}</h3>
+	</c:if>
+	<c:if test="${profile.city != null}">
+		<h4 class="text-center">${profile.city}</h4>
+	</c:if>
+	<c:if test="${profile.country != null}">
+		<h4 class="text-center">${profile.country}</h4>
+	</c:if>
+	<c:if test="${profile.birthday != null}">
 		<p class="text-center">
 			<strong>Age: </strong>
 			${profile.age}
 			<strong> Birthday: </strong>
 			${profile.birthdayString}
 		</p>
-		<table class="table">
+	</c:if>
+	<table class="table">
+		<tr>
+			<td class="resume-contact-td-icon">
+				<i class="fa fa-envelope" aria-hidden="true"></i>
+			</td>
+			<td class="resume-contact-td-value">
+				<a href="mailto:${profile.email}">${profile.email}</a>
+			</td>
+		</tr>
+		<c:if test="${profile.phone != null}">
 			<tr>
-				<td class="resume-contact-td-icon">
+				<td>
 					<i class="fa fa-phone" aria-hidden="true"></i>
 				</td>
-				<td class="resume-contact-td-value">
+				<td>
 					<a href="tel:${profile.phone}">${profile.phone}</a>
 				</td>
 			</tr>
+		</c:if>
+		<c:if test="${profile.contact.skype != null}">
 			<tr>
 				<td>
-					<i class="fa fa-envelope" aria-hidden="true"></i>
+					<i class="fa fa-skype" aria-hidden="true"></i>
+				</td>
+				<td>${profile.contact.skype}</td>
+			</tr>
+		</c:if>
+		<c:if test="${profile.contact.vkontakte != null}">
+			<tr>
+				<td>
+					<i class="fa fa-vk" aria-hidden="true"></i>
 				</td>
 				<td>
-					<a href="mailto:${profile.email}">${profile.email}</a>
+					<a href="${profile.contact.vkontakte}">${profile.contact.vkontakte}</a>
 				</td>
 			</tr>
-			<c:if test="${profile.contact.skype != null}">
-				<tr>
-					<td>
-						<i class="fa fa-skype" aria-hidden="true"></i>
-					</td>
-					<td>${profile.contact.skype}</td>
-				</tr>
-			</c:if>
-			<c:if test="${profile.contact.vkontakte != null}">
-				<tr>
-					<td>
-						<i class="fa fa-vk" aria-hidden="true"></i>
-					</td>
-					<td>
-						<a href="${profile.contact.vkontakte}">${profile.contact.vkontakte}</a>
-					</td>
-				</tr>
-			</c:if>
-			<c:if test="${profile.contact.facebook != null}">
-				<tr>
-					<td>
-						<i class="fa fa-facebook" aria-hidden="true"></i>
-					</td>
-					<td>
-						<a href="${profile.contact.facebook}">${profile.contact.facebook}</a>
-					</td>
-				</tr>
-			</c:if>
-			<c:if test="${profile.contact.linkedin != null}">
-				<tr>
-					<td>
-						<i class="fa fa-linkedin" aria-hidden="true"></i>
-					</td>
-					<td>
-						<a href="${profile.contact.linkedin}">${profile.contact.linkedin}</a>
-					</td>
-				</tr>
-			</c:if>
-			<c:if test="${profile.contact.github != null}">
-				<tr>
-					<td>
-						<i class="fa fa-github" aria-hidden="true"></i>
-					</td>
-					<td>
-						<a href="${profile.contact.github}">${profile.contact.github}</a>
-					</td>
-				</tr>
-			</c:if>
-			<c:if test="${profile.contact.stackoverflow != null}">
-				<tr>
-					<td>
-						<i class="fa fa-stack-overflow" aria-hidden="true"></i>
-					</td>
-					<td>
-						<a href="${profile.contact.stackoverflow}">${profile.contact.stackoverflow}</a>
-					</td>
-				</tr>
-			</c:if>
-		</table>
-	</c:if>
+		</c:if>
+		<c:if test="${profile.contact.facebook != null}">
+			<tr>
+				<td>
+					<i class="fa fa-facebook" aria-hidden="true"></i>
+				</td>
+				<td>
+					<a href="${profile.contact.facebook}">${profile.contact.facebook}</a>
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${profile.contact.linkedin != null}">
+			<tr>
+				<td>
+					<i class="fa fa-linkedin" aria-hidden="true"></i>
+				</td>
+				<td>
+					<a href="${profile.contact.linkedin}">${profile.contact.linkedin}</a>
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${profile.contact.github != null}">
+			<tr>
+				<td>
+					<i class="fa fa-github" aria-hidden="true"></i>
+				</td>
+				<td>
+					<a href="${profile.contact.github}">${profile.contact.github}</a>
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${profile.contact.stackoverflow != null}">
+			<tr>
+				<td>
+					<i class="fa fa-stack-overflow" aria-hidden="true"></i>
+				</td>
+				<td>
+					<a href="${profile.contact.stackoverflow}">${profile.contact.stackoverflow}</a>
+				</td>
+			</tr>
+		</c:if>
+	</table>
 </div>

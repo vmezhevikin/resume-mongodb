@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-				<c:if test="${profile.objective != null}">
+				<c:if test="${profile.objective != null || profile.summary != null}">
 					<resume:resume-objective />
 				</c:if>
 				<c:if test="${!profile.skill.isEmpty()}">

@@ -29,9 +29,15 @@ public interface FindProfileService {
 	
 	@Nullable Profile findByUniqueId(@Nonnull String anyUniqueId);
 	
-	@Nullable Profile findByToken(@Nonnull String token);
+	@Nullable Profile findByRestoreToken(@Nonnull String token);
+	
+	@Nullable Profile findByConfirmRegistrationToken(@Nonnull String token);
+	
+	@Nullable Profile findByConfirmEmailToken(@Nonnull String token);
 
-	@Nonnull List<Profile> findNotCompletedProfilesCreatedBefore(@Nonnull Date date);
+	@Nonnull List<Profile> findNotActiveProfilesCreatedBefore(@Nonnull Date date);
+	
+	@Nonnull List<Profile> findProfilesVisitedBefore(@Nonnull Date date);
 	
 	@Nonnull List<Profile> findProfilesWithCompletedCourseBefore(@Nonnull Date date);
 	
