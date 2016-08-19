@@ -1,6 +1,9 @@
 ;$(function() {
 	
 	var newIndex, blankItem;
+	var strongPassExpr = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$', '');
+	var smthWasEdited = false;
+	var formSubmitting = false;
 
 	var showAlertMessage = function(message) {
 		alert(message);
@@ -87,7 +90,7 @@
 					
 				},
 				error : function(data) {
-					showMessage('Error', 'Try again later...');
+					showMessage('Error', 'Changes not saved...');
 				}
 			});
 		});
@@ -262,6 +265,68 @@
 	};
 
 
+	var initPasswordInput = function() {
+		$('#passwordInput').on('input', function() {
+			var input = $(this);
+			var group = $('#passwordGroup');
+			var icon = $('#passwordResultIcon');
+			var text = $('#passwordResultText');
+			var pass = input.val();
+			if (pass.length < 3) {
+				group.removeClass('has-success has-warning');
+				group.addClass('has-error');
+				icon.removeClass('hidden glyphicon-ok glyphicon-warning-sign');
+				icon.addClass('glyphicon-remove');
+				text.removeClass('hidden');
+				text.text('Weak password');
+			}
+			else if (strongPassExpr.test(pass)) {
+				group.removeClass('has-warning has-error');
+				group.addClass('has-success');
+				icon.removeClass('hidden glyphicon-warning-sign glyphicon-remove');
+				icon.addClass('glyphicon-ok');
+				text.removeClass('hidden');
+				text.text('Strong password');
+			}
+			else {
+				group.removeClass('has-success has-error');
+				group.addClass('has-warning');
+				icon.removeClass('hidden glyphicon-ok glyphicon-remove');
+				icon.addClass('glyphicon-warning-sign');
+				text.removeClass('hidden');
+				text.text('Normal password');
+			};
+		});
+	};
+
+
+	var smthEdited = function() {
+		smthWasEdited = true;
+		$('#submitBtn').removeClass('btn-default');
+		$('#submitBtn').addClass('btn-info');
+		$('#submitListBtn').removeClass('btn-default');
+		$('#submitListBtn').addClass('btn-info');
+	};
+	var submitBtnClicked = function() {
+		formSubmitting = true;
+	};
+	var initAlertAboutUnsavedChanges = function() {
+		$('.table input').change(smthEdited);
+		$('.table textarea').change(smthEdited);
+		$('.table select').change(smthEdited);
+		$('.table #addItem').click(smthEdited);
+		$('.table .remove-item-btn').click(smthEdited);
+		$('.table .hobby-btn').click(smthEdited);
+		$('.table #submitBtn').click(submitBtnClicked);
+		$(window).on('beforeunload', function(e) {
+			if (formSubmitting || !smthWasEdited) {
+				return undefined;
+			}
+			return "It looks like you have been editing something. If you leave before saving, your changes will be lost.";
+		});
+	};
+
+
 	var showMessage = function(title, message) {
 		$('#messageTitle').text(title);
 		$('#messageText').text(message);
@@ -285,6 +350,8 @@
 	initSignOutForm();
 	initRemoveEmptyItemsAndSubmitForm();
 	initSignUpPopovers();
+	initPasswordInput();
+	initAlertAboutUnsavedChanges();
 });
 
 var onloadCallback = function() {

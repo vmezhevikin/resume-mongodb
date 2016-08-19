@@ -6,8 +6,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
+import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.FieldMatch;
-import net.devstudy.resume.annotation.constraints.PasswordStrength;
 
 @FieldMatch(firstField = "password", secondField = "confirm")
 public class SignUpForm extends RecaptchaForm implements Serializable {
@@ -22,7 +22,8 @@ public class SignUpForm extends RecaptchaForm implements Serializable {
 	@Email
 	private String email;
 
-	@PasswordStrength
+	@Size(min = 1)
+	@EnglishLanguage
 	private String password;
 
 	private String confirm;

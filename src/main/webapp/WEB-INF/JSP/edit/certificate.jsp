@@ -20,8 +20,8 @@
 			<tr>
 				<td colspan="3" class="align-center">
 					<hr/>
-					<a href="/add/certificate" type="button" class="btn btn-success">Add</a>
-					<button id="submitListBtn" type="button" class="btn btn-primary">Edit</button>
+					<a href="/add/certificate" type="button" class="btn btn-default">Add record</a>
+					<button id="submitListBtn" type="button" class="btn btn-default">Save changes</button>
 				</td>
 			</tr>
 		</table>

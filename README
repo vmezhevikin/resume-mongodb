@@ -9,11 +9,44 @@ Difference:
 	database postgresql -> mongoDB
 	
 Refactoring:
-	Jun 24
-	Changed base project. DB changed to MongoDB
+	Aug 19
+		refactoring:
+			removed validation for strong password (added text notification about password complexity)
+		fixed:
+			/sign-up empty fields after binding result with error
+			mistakes in checking email, phone, uid for uniqueness
+		edited:
+			search query for searching phrase
+		added:
+			checking for unsaved changes on page
 	
+	Aug 16
+		refactoring:
+			app.css
+			app.js
+			email notifications
+		fixed:
+			/error page caused by empty search query
+			/edit/hobby page - added icons for all hobbies
+			/edit/skills page - removed possibility to choose one category several times
+			whole sign up proccess (sign up demand only email and password, confirm registration by confirm email, ability to change uid, first name, last name)
+		edited:
+			/edit/general information page
+		added:
+			/edit/settings page (for editing uid, email, password)
+			
+	Aug 02, Aug 09
+		refactoring:
+			processing forms and submit using jquery
+			app.css
+			app.js
+		added:
+			implementation Comparable<E> to profile collections
+		fixed:
+			added sorting collections before saving
+			mistakes
+			
 	Aug 01
-	Refactoring:
 		renamed:
 			static data collections (staticSkillData, staticHobbyData)
 			QuartzSchedulerConfig
@@ -37,30 +70,6 @@ Refactoring:
 			added synchronized blocks while check email for uniqueness
 			edit hobby page (checkbox -> buttons)
 			mistakes
-	
-	Aug 02, Aug 09
-		refactoring:
-			processing forms and submit using jquery
-			app.css
-			app.js
-		added:
-			implementation Comparable<E> to profile collections
-		fixed:
-			added sorting collections before saving
-			mistakes
-	
-	
-	Aug 16
-		refactoring:
-			app.css
-			app.js
-			email notifications
-		fixed:
-			/error page caused by empty search query
-			/edit/hobby page - added icons for all hobbies
-			/edit/skills page - removed possibility to choose one category several times
-			whole sign up proccess (sign up demand only email and password, confirm registration by confirm email, ability to change uid, first name, last name)
-		edited:
-			/edit/general information page
-		added:
-			/edit/settings page (for editing uid, email, password)
+			
+	Jun 24
+		Changed base project. DB changed to MongoDB

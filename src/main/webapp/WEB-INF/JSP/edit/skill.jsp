@@ -20,8 +20,8 @@
 			<tr id="addItemRow">
 				<td colspan="3" class="align-center">
 					<hr/>
-					<button id="addItem" type="button" class="btn btn-success">Add</button>
-					<button id="submitListBtn" type="button" class="btn btn-primary">Edit</button>
+					<button id="addItem" type="button" class="btn btn-default">Add record</button>
+					<button id="submitListBtn" type="button" class="btn btn-default">Save changes</button>
 				</td>
 			</tr>
 		</table>

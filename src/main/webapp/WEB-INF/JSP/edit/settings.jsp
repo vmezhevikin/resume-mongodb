@@ -27,28 +27,32 @@
 								this adress will be shown at your page." />
 								<input name="email" type="text" class="form-control" placeholder="New email" value="${emailForm.email}" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${emailPopoverText}" />
 							</div>
-							<button type="button" class="btn btn-primary pull-left submit-form-btn" data-form="emailForm">Change email</button>
+							<button type="button" class="btn btn-info pull-left submit-form-btn" data-form="emailForm">Change email</button>
 						</div>
 					</div>
 					<hr />
 					<div class="panel-body">
 						<div data-url="/edit/password" id="passwordForm">
-							<div class="form-group">
+							<div id="passwordGroup" class="form-group">
 								<div class="alert alert-danger hidden" id="passwordFormErrorDiv">
 									<span id="passwordFormErrorText"></span>
 								</div>
-								<label>New password</label>
+								<label class="control-label">New password</label>
 								<c:set var="passwordPopoverText" value="Provide strong password:
 								use english language only; 
-								password nust contain at least one digit, symbol, chars in lower case, upper case;  
-								password must be longer than 7 symbols." />
-								<input name="password" type="password" class="form-control" placeholder="New password" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${passwordPopoverText}" />
+								password should contain at least one digit, symbol, chars in lower case, upper case;  
+								password should be longer than 7 symbols." />
+								<input name="password" type="password" id="passwordInput" class="form-control" placeholder="New password" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${passwordPopoverText}" />
+								<span class="help-block">
+									<span id="passwordResultIcon" class="glyphicon hidden" aria-hidden="true"></span>
+									<span id="passwordResultText" class="hidden">Strong password</span>
+								</span>
 							</div>
 							<div class="form-group">
 								<label>Confirm password</label>
 								<input name="confirm" type="password" class="form-control" placeholder="Confirm password" />
 							</div>
-							<button type="button" class="btn btn-primary pull-left submit-form-btn" data-form="passwordForm">Change password</button>
+							<button type="button" class="btn btn-info pull-left submit-form-btn" data-form="passwordForm">Change password</button>
 						</div>
 					</div>
 					<hr />
@@ -64,7 +68,7 @@
 								don't use any symbols." />
 								<input name="uid" type="text" class="form-control" placeholder="New UID" value="${uidForm.uid}" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${uidPopoverText}" />
 							</div>
-							<button type="button" class="btn btn-primary pull-left submit-form-btn" data-form="uidForm">Change uid</button>
+							<button type="button" class="btn btn-info pull-left submit-form-btn" data-form="uidForm">Change uid</button>
 						</div>
 					</div>
 				</div>

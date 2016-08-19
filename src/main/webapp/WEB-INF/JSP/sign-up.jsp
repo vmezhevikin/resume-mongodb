@@ -20,16 +20,20 @@
 								this adress will be shown at your page; 
 								this adress will be used to send notifications; 
 								this adress will be used for confirmation of your registration." />
-							<input name="email" type="text" class="form-control" placeholder="Email" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${emailPopoverText}" />
+							<input name="email" type="text" value="${form.email}" class="form-control" placeholder="Email" data-toggle="popover" data-placement="top" data-trigger="focus" />
 							<form:errors path="email" cssClass="alert alert-danger" role="alert" element="div" />
 						</div>
-						<div class="form-group">
-							<label>Password</label>
+						<div id="passwordGroup" class="form-group">
+							<label class="control-label">Password</label>
 							<c:set var="passwordPopoverText" value="Provide strong password:
 								use english language only; 
-								password nust contain at least one digit, symbol, chars in lower case, upper case;  
-								password must be longer than 7 symbols." />
-							<input name="password" type="password" class="form-control" placeholder="Password" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${passwordPopoverText}" />
+								password should contain at least one digit, symbol, chars in lower case, upper case;  
+								password should be longer than 7 symbols." />
+							<input name="password" type="password" id="passwordInput" class="form-control" placeholder="Password" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="${passwordPopoverText}" />
+							<span class="help-block">
+								<span id="passwordResultIcon" class="glyphicon hidden" aria-hidden="true"></span>
+								<span id="passwordResultText" class="hidden">Strong password</span>
+							</span>
 							<form:errors path="password" cssClass="alert alert-danger" role="alert" element="div" />
 						</div>
 						<div class="form-group">

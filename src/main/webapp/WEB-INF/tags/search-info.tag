@@ -23,7 +23,6 @@
 								<li>Practical experience (company, position)</li>
 								<li>Skill (category, description)</li>
 							</ul>
-							You also may try improving search results using wildcards (? - any character, * - zero or more characters)
 						</div>
 					</div>
 				</div>

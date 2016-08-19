@@ -2,8 +2,10 @@ package net.devstudy.resume.form;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Size;
+
+import net.devstudy.resume.annotation.constraints.EnglishLanguage;
 import net.devstudy.resume.annotation.constraints.FieldMatch;
-import net.devstudy.resume.annotation.constraints.PasswordStrength;
 
 @FieldMatch(firstField = "password", secondField = "confirm")
 public class PasswordForm implements Serializable {
@@ -14,7 +16,8 @@ public class PasswordForm implements Serializable {
 		super();
 	}
 	
-	@PasswordStrength
+	@Size(min = 1)
+	@EnglishLanguage
 	private String password;
 
 	private String confirm;

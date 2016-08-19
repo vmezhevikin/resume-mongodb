@@ -6,11 +6,6 @@
 <div class="container resume-edit-block">
 	<h2 class="text-center">Additional information</h2>
 	<form:form action="/edit/additional" method="post" commandName="form">
-		<input type="hidden" name="country" value="stub" />
-		<input type="hidden" name="city" value="stub" />
-		<input type="hidden" name="birthdayString" value="1990-01-01" />
-		<input type="hidden" name="email" value="stub@stub.com" />
-		<input type="hidden" name="phone" value="+380501234567" />
 		<table class="table">
 			<tr>
 				<td>
@@ -35,7 +30,7 @@
 			</tr>
 			<tr>
 				<td class="align-center">
-					<button type="submit" class="btn btn-primary">Edit</button>
+					<button id="submitBtn" type="submit" class="btn btn-default">Save changes</button>
 				</td>
 			</tr>
 		</table>

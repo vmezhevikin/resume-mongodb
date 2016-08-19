@@ -3,11 +3,19 @@ package net.devstudy.resume.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -78,7 +86,27 @@ public class FindProfileServiceImpl implements FindProfileService, UserDetailsSe
 
 	@Override
 	public Page<Profile> findBySearchQuery(String query, Pageable pageable) {
-		return profileSearchRepository.findByAllSubstantialFields(query, pageable);
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+			.withQuery(QueryBuilders.multiMatchQuery(query)
+			.type(MultiMatchQueryBuilder.Type.PHRASE)
+			.slop(2)
+			.field("summary")
+			.field("objective")
+			.field("additionalInfo")
+			.field("language.name")
+			.field("certificate.description")
+			.field("course.description")
+			.field("experience.company")
+			.field("experience.position")
+			.field("experience.responsibility")
+			.field("skill.category")
+			.field("skill.description")
+			.fuzziness(Fuzziness.AUTO)
+			.operator(MatchQueryBuilder.Operator.AND))
+			.withSort(SortBuilders.fieldSort("uid").order(SortOrder.DESC))
+			.build();
+		searchQuery.setPageable(pageable);
+		return profileSearchRepository.search(searchQuery);
 	}
 
 	@Override

@@ -32,8 +32,8 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="align-center">
-					<button type="submit" class="btn btn-primary">Add</button>
-					<a href="/edit/certificate" class="btn btn-danger">Back</a>
+					<button type="submit" class="btn btn-info">Add certificate</button>
+					<a href="/edit/certificate" class="btn btn-warning">Back to certificates</a>
 				</td>
 			</tr>
 		</table>

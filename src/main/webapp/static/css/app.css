@@ -225,3 +225,7 @@ html {
 .select-category option:disabled {
 	display: none;
 }
+
+li.active > a {
+	cursor: pointer !important;
+}
